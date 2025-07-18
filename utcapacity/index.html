@@ -1,274 +1,853 @@
 <html>
-  <head>
-    <title></title>
-    <link href="https://iceinstitut.github.io/katalog/aset/bootstrap.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="https://rsms.me/inter/inter.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-  </head>
-  <style>
-    body {
-      font-family: Inter !important
-    }
 
-    .card-img-container {
-      height: 200px;
-      overflow: hidden;
-    }
+<head>
+	<title></title>
+	<link href="https://iceinstitut.github.io/katalog/aset/bootstrap.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="https://rsms.me/inter/inter.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"> </head>
+<style>
+body {
+	font-family: Inter !important
+}
 
-    .body-content {
-      display: none;
-      /* padding: 20px; */
-      /* margin-top: 20px; */
-      /* border: 1px solid #dee2e6; */
-      /* border-radius: 5px; */
-    }
+.card-img-container {
+	height: 200px;
+	overflow: hidden;
+}
 
-    .body-content.active {
-      display: block;
-    }
+.body-content {
+	display: none;
+	/* padding: 20px; */
+	/* margin-top: 20px; */
+	/*border: 1px solid #dee2e6; */
+	/* border-radius: 5px; */
+}
 
-    .card {
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
-    }
+.body-content.active {
+	display: block;
+}
 
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
+.card {
+	cursor: pointer;
+	transition: all 0.3s ease;
+	border: 2px solid transparent;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
 
-    .card.active {
-      border: 2px solid #ee1522;
-      box-shadow: 0 5px 15px rgba(238, 21, 34, 0.3);
-      transform: translateY(-2px);
-    }
+.card:hover {
+	transform: translateY(-15px);
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
 
-    .card.active .card-title {
-      color: #ee1522;
-    }
-  </style>
-  <body>
-    <header>
-      <div class="d-flex flex-column flex-md-row align-items-center p-3 mb-4 border-bottom border-primary">
-        <a href="https://icei.ac.id/" class="d-flex align-items-center link-body-emphasis text-decoration-none">
-          <img src="https://icei.ac.id/static/comprehensive/images/ICE_Institute_logo.0efdedb304d8.png">
-        </a>
-        <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto fw-bold">
-          <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#">Categories</a>
-          <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="https://icei.ac.id/tracks/institusi">Partners</a>
-          <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="https://verify.accredible.com/input">Certificates</a>
-          <a class="py-2 link-body-emphasis text-decoration-none" href="#">Resources</a>
-          <a class="py-2 link-body-emphasis text-decoration-none" href="https://icei.ac.id/courses">
-            <i class="bi bi-search  mx-3"></i>
-          </a>
-          <a href="https://icei.ac.id/register?next=%2F" type="button" class="btn btn-outline-primary mx-3">Register</a>
-          <a href="https://icei.ac.id/login?next=%2F" type="button" class="btn btn-outline-primary mx-3">Login</a>
-        </nav>
-      </div>
-    </header>
-    <div class="container py-3">
-      <main>
-        <div class="container">
-          <div class="row">
-            <div class="col">
-              <div class="flex align-items-center content-wrapper">
-                <img src="https://upload.wikimedia.org/wikipedia/id/c/c3/Logo_Universitas_Terbuka.svg" alt="" height="200" width="200" style="margin-right: 40px; object-fit: contain;">
-              </div>
-            </div>
-            <div class="col-9">
-              <h3 class="m-0">Universitas Terbuka</h3>
-              <p style="margin: 5px 0 5px 0 !important;">
-                <b>UTx</b>
-              </p>
-              <div id="descriptiondiv" style="padding-bottom:20px;">
-                <p>Katalog Course ICE Institute dalam rangka peningkatan kualitas dan pengayaan kapasitas Instruktur Pelatihan di Lingkungan Universitas Terbuka</p>
-              </div>
-            </div>
-            <div class="col-12 mx-3">
-              <!-- Row untuk Card -->
-              <div class="row row-cols-3 g-4 mb-5 text-center">
-                <div class="col">
-                  <div class="card h-100" id="card1" onclick="showBody(1)">
-                    <div class="d-flex align-items-center justify-content-center p-3" style="height: 250px;">
-                      <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/16004/16004663.png" class="img-fluid mh-100">
-                    </div>
-                    <div class="card-footer bg-white border-0">
-                      <h5 class="card-title">PAKET A</h5>
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="card h-100" id="card2" onclick="showBody(2)">
-                    <div class="d-flex align-items-center justify-content-center p-3" style="height: 250px;">
-                      <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/16004/16004571.png" class="img-fluid mh-100">
-                    </div>
-                    <div class="card-footer bg-white border-0">
-                      <h5 class="card-title">PAKET B</h5>
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="card h-100" id="card3" onclick="showBody(3)">
-                    <div class="d-flex align-items-center justify-content-center p-3" style="height: 250px;">
-                      <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/16004/16004566.png" class="img-fluid mh-100">
-                    </div>
-                    <div class="card-footer bg-white border-0">
-                      <h5 class="card-title">PAKET C</h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Body Content -->
-              <div id="body1" class="body-content">
-                <h2>Paket A</h2>
-                <div class="row row-cols-2 row-cols-md-4 g-3">
-                  <div class="col">
-                    <div class="card h-100 shadow-sm">
-                      <div class="position-relative p-2">
-                        <div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height: 65px; width: 200px; z-index: 2; display: flex; align-items: center; justify-content: center;">
-                          <img src="https://prod-discovery.edx-cdn.org/organization/logo_override/a626c6e3-1041-4937-94fe-d144c8355a2d-93a6bc8eb539.png" loading="lazy" alt="logo Harvard University" style="max-height: 100%; max-width: 100%; object-fit: contain;">
-                        </div>
-                        <div class="ratio ratio-16x9">
-                          <img src="https://prod-discovery.edx-cdn.org/media/course/image/a626c6e3-1041-4937-94fe-d144c8355a2d-78f6c0678bda.jpg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Harvard University">
-                        </div>
-                      </div>
-                      <div class="card-body">
-                        <h5 class="card-title">Higher Education Teaching Certificate</h5>
-                        <h6 class="card-subtitle text-muted" style="font-size:1.13rem;">Harvard University</h6>
-                        <div>
-                          <span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Executive Education</span>
-                          <span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 100</span>
-                        </div>
-                      </div>
-                      <div class="card-footer d-grid gap-3">
-                        <a class="btn btn-primary" href="https://www.edx.org/executive-education/harvard-university-higher-education-teaching-certificate?index=product&queryId=45ad3b851749a0027e1fcef3638c51d7&position=1&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Course Detail</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div id="body2" class="body-content text-center">> <h2>Paket B</h2>
-              </div>
-              <div id="body3" class="body-content text-center">
-                <h2>Paket C</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-    <footer class="pt-4 my-md-5 pt-md-5 border-top">
-      <div class="container">
-        <div class="row">
-          <div class="col-8">
-            <div class="wrapper-logo">
-              <p>
-                <a href="/">
-                  <img alt="organization logo" height="50em" src="https://icei.ac.id/static/comprehensive/images/ICE_Institute_logo.0efdedb304d8.png">
-                </a>
-              </p>
-            </div>
-            <p class="copyright">ICE Institute is your hub to study anywhere and anytime at the campus of your choice! Now you can learn from all the best universities around the globe.</p>
-            <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto fw-bold">
-              <a class="me-3 py-2 text-decoration-none" href="https://icei.ac.id/">Home</a>
-              <a class="me-3 py-2 text-decoration-none" href="https://icei.ac.id/tracks/about/">About</a>
-              <a class="me-3 py-2 text-decoration-none" href="https://icei.ac.id/courses">Courses</a>
-              <a class="me-3 py-2 text-decoration-none" href="https://icei.ac.id/tracks/institusi">Universities</a>
-              <a class="me-3 py-2 text-decoration-none" href="https://verify.accredible.com/input">Certificate</a>
-              <a class="me-3 py-2 text-decoration-none" href="https://icei.ac.id/faq">FAQs</a>
-              <a class="me-3 py-2 text-decoration-none" href="https://icei.ac.id/hubungi-kami">Contact</a>
-              <a class="py-2 text-decoration-none" href="https://icei.ac.id/user-guide">Help</a>
-            </nav>
-          </div>
-          <div class="col-4 border-start">
-            <div class="footer_last_child">
-              <h5 style="color:red">Address</h5>
-              <p style="font-size:14px">ICE Institute <br>Universitas Terbuka <br>Gedung LPPMP Lantai 2 <br>Jl. Cabe Raya Pondok Cabe, Pamulang, <br>Tangerang Selatan Banten - 15437 <br>
-                <i class="fa fa-phone"></i>&nbsp;0812 5050 4200 <br>
-                <span style="color:red;display:inline-block!important">
+.card.active {
+	border: 2px solid #ee1522;
+	box-shadow: 0 5px 15px rgba(238, 21, 34, 0.3);
+	transform: translateY(-2px);
+}
+
+.card.active .card-title {
+	color: #ee1522;
+}
+</style>
+
+<body>
+	<header>
+		<div class="d-flex flex-column flex-md-row align-items-center p-3 mb-4 border-bottom border-primary">
+			<a href="https://icei.ac.id/" class="d-flex align-items-center link-body-emphasis text-decoration-none"> <img src="https://icei.ac.id/static/comprehensive/images/ICE_Institute_logo.0efdedb304d8.png"> </a>
+			<nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto fw-bold"> <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#">Categories</a> <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="https://icei.ac.id/tracks/institusi">Partners</a> <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="https://verify.accredible.com/input">Certificates</a> <a class="py-2 link-body-emphasis text-decoration-none" href="#">Resources</a>
+				<a class="py-2 link-body-emphasis text-decoration-none" href="https://icei.ac.id/courses"> <i class="bi bi-search  mx-3"></i> </a> <a href="https://icei.ac.id/register?next=%2F" type="button" class="btn btn-outline-primary mx-3">Register</a> <a href="https://icei.ac.id/login?next=%2F" type="button" class="btn btn-outline-primary mx-3">Login</a> </nav>
+		</div>
+	</header>
+	<div class="container py-3">
+		<main>
+			<div class="container">
+				<div class="row">
+					<div class="col-12 text-center">
+						<div class="flex align-items-center content-wrapper"> <img src="https://iceinstitut.github.io/image/aset/ice-institute-logo-symbol.png" alt="" height="200" width="200" style="margin-right: 40px; object-fit: contain;"> <img src="https://upload.wikimedia.org/wikipedia/id/c/c3/Logo_Universitas_Terbuka.svg" alt="" height="200" width="200" style="margin-right: 40px; object-fit: contain;"> </div>
+					</div>
+					<div class="col-12 text-center mt-3">
+						<h3>Katalog ini di sediakan secara khusus dalam rangka peningkatan kualitas dan pengayaan kapasitas Instruktur Pelatihan di Lingkungan Universitas Terbuka</h3> </div>
+					<div class="col-12 mx-3 my-3">
+						<!-- Row untuk Card -->
+						<div class="row row-cols-3 g-4 mb-5 text-center">
+							<div class="col">
+								<div class="card h-100" id="card1" onclick="showBody(1)">
+									<div class="d-flex align-items-center justify-content-center p-3" style="height: 200px;"> <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/16004/16004663.png" class="img-fluid mh-100"> </div>
+									<div class="card-footer bg-white border-0">
+										<h5 class="card-title">PAKET A</h5> </div>
+								</div>
+							</div>
+							<div class="col">
+								<div class="card h-100" id="card2" onclick="showBody(2)">
+									<div class="d-flex align-items-center justify-content-center p-3" style="height: 200px;"> <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/16004/16004571.png" class="img-fluid mh-100"> </div>
+									<div class="card-footer bg-white border-0">
+										<h5 class="card-title">PAKET B</h5> </div>
+								</div>
+							</div>
+							<div class="col">
+								<div class="card h-100" id="card3" onclick="showBody(3)">
+									<div class="d-flex align-items-center justify-content-center p-3" style="height: 200px;"> <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/16004/16004566.png" class="img-fluid mh-100"> </div>
+									<div class="card-footer bg-white border-0">
+										<h5 class="card-title">PAKET C</h5> </div>
+								</div>
+							</div>
+						</div>
+						<!-- Body Content -->
+						<div id="body1" class="body-content">
+							<!-- <h2>Paket A</h2> -->
+							<div class="row row-cols-2 row-cols-md-3 g-3 border rounded-3 p-5">
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logo_override/a626c6e3-1041-4937-94fe-d144c8355a2d-93a6bc8eb539.png" loading="lazy" alt="logo Harvard University" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/a626c6e3-1041-4937-94fe-d144c8355a2d-78f6c0678bda.jpg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Harvard University"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Higher Education Teaching Certificate</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Harvard University</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Executive Education</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Untuk 1 User</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 100</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/executive-education/harvard-university-higher-education-teaching-certificate?index=product&queryId=45ad3b851749a0027e1fcef3638c51d7&position=1&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logo_override/f3237abc-dd9a-44ef-b4a1-6a844536f2e6-f9c292bf3bae.png" loading="lazy" alt="logo University of Cape Town" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/cdn-cgi/image/width=auto,height=auto,quality=75,format=webp/media/course/image/e8c256c7-7508-4041-abc8-57c5acda2a08-042e3b02cc1e.jpg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover University of Cape Town"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Instructional Design</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">University of Cape Town</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Executive Education</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Untuk 2 User</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 100</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/executive-education/university-of-cape-town-instructional-design?index=product&queryId=45ad3b851749a0027e1fcef3638c51d7&position=1&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logo_override/f3237abc-dd9a-44ef-b4a1-6a844536f2e6-f9c292bf3bae.png" loading="lazy" alt="logo University of Cape Town" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/cdn-cgi/image/width=auto,height=auto,quality=75,format=webp/media/course/image/f3237abc-dd9a-44ef-b4a1-6a844536f2e6-7f5e8d9d5838.jpg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover University of Cape Town"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Teaching With Technology</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">University of Cape Town</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Executive Education</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Untuk 2 User</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 100</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/executive-education/university-of-cape-town-teaching-with-technology?index=product&queryId=45ad3b851749a0027e1fcef3638c51d7&position=1&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="body2" class="body-content">
+							<!-- <h2>Paket B</h2> -->
+							<div class="row row-cols-1 row-cols-md-1 g-3 border rounded-3 p-5"> <img src="https://img.freepik.com/free-vector/hand-drawn-flat-design-overwhelmed-people-illustration_23-2149335658.jpg" width="80%"> </div>
+						</div>
+						<div id="body3" class="body-content">
+							<h2>Paket C</h2>
+							<div class="row row-cols-2 row-cols-md-4 g-3 border rounded-3 p-5">
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/a455918c-387b-46b2-b943-d4b8f3edcf56-c2120c85b7c3.png" loading="lazy" alt="logo Technical University of Munich" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/ee757321-8abb-4bb6-ae9f-c7fd2df67977-a2fa3364c849.small.jpg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Technical University of Munich"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Academic Writing Made Easy</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Technical University of Munich</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 65</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/writing/technische-universitat-munchen-academic-writing-made-easy?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/bdc5d671-6044-494c-8bc6-933a9026e0d8-94cb0361f44b.png" loading="lazy" alt="logo Aptly" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/3fe68bb5-650d-46c2-9410-fe638a885f85-1252163b8bc1.small.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Aptly"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Accessibility and Universal Design</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Aptly</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 79</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/education-teacher-training/aptly-accessibility-and-universal-design?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/518a47f2-66fb-4529-8902-a4f7ca3002ef-32e55d44aff3.png" loading="lazy" alt="logo Universitat Politècnica de València" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/619683a2-9040-4e39-b6b7-fb3ecd06bb3c-df3bc64d2842.small.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Universitat Politècnica de València"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Accessible technology for inclusion</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Universitat Politècnica de València</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 15</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/design/universitat-politecnica-de-valencia-accessible-technology-for-inclusion?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/165092b7-5a47-41bd-8109-58e2f088c44f-50f67697a302.png" loading="lazy" alt="logo BoxPlay" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/7212f4a3-c964-41bb-a932-60b43a6ee921-fe78106b6227.small.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover BoxPlay"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Active Listening: How to Be an Effective Communicator</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">BoxPlay</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 89</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/business-communications/boxplay-active-listening-how-to-be-an-effective-communicator?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/ac5b634b-1d88-43d5-8199-1142a2e4fc96-0f3719f6fbd4.png" loading="lazy" alt="logo The University of Maryland, College Park" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/8a1d65fc-8ae5-4292-ad7b-e5c6059aeb91-ff05e344413a.small.jpg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover The University of Maryland, College Park"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Agile Leadership Principles and Practices</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">The University of Maryland, College Park</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 249</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/agile/the-university-of-maryland-college-park-agile-leadership-principles-and-practices?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/2b993f2d-f65b-4791-b2f5-0fa11fedfd15-f867a771d99f.png" loading="lazy" alt="logo Davidson College" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/f6cec8bb-29d1-48f4-aa9f-22b16a77945a-953e816f038a.small.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Davidson College"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">AI Ethics for Professionals</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Davidson College</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 99</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/computer-science/davidson-college-the-ethics-of-ai?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/87b07564-d569-4cfd-bee6-8b0a407acb73-dc33e4b5f353.png" loading="lazy" alt="logo IBM" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/f11c9289-596e-4c46-a9cb-318052f259ae-0b7656599f64.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover IBM"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">AI for Everyone: Master the Basics</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">IBM</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 99</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/artificial-intelligence/ibm-ai-for-everyone-master-the-basics?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/7205f972-57a3-4313-a7ea-7dfa0645d965-399b53df1455.png" loading="lazy" alt="logo KU Leuven" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/77ba4032-53cb-4d03-8023-4f2e739883fb-06c7d2b0e9d2.small.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover KU Leuven"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">AI to Understand and Connect People</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">KU Leuven</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 49</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/humanities/ku-leuven-ai-to-understand-and-connect-people-a-course-for-humanities-and-social-sciences-professionals?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/8946fb40-f288-4e05-9275-9e9b4689bda8-e58c545e2296.png" loading="lazy" alt="logo Indiana University" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/f0c88aee-00eb-4130-b83d-d888c80e0889-89e4d189fb39.png" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Indiana University"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Becoming a People Manager: Taking Charge with Care</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Indiana University</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 199</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/management/indiana-university-becoming-a-people-manager-taking-charge-with-care?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/7a2e476c-f802-49ba-9dbd-d44e5658277c-914467970e00.png" loading="lazy" alt="logo Catalyst" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/279fc0f3-fba6-4a13-b538-d05844370430-43f11d79ac47.small.jpg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Catalyst"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Becoming a Successful Leader (Inclusive Leadership Training)</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Catalyst</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 69</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/leadership/catalyst-becoming-a-successful-leader-inclusive-leadership-training?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/31705519-3082-4c18-aa23-1caf9a038b1c-21ab36bd68bc.png" loading="lazy" alt="logo Amazon Web Services" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/e0c523dd-7026-4d2c-bcf7-8b89e302e2d9-5c49c4c4f0ea.small.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Amazon Web Services"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Bringing Ideas to Life Using AI</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Amazon Web Services</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 99</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/computer-science/amazon-web-services-introduction-to-ai-applications-on-aws-bring-ideas-to-life-using-ai?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/1e2adb13-5e26-4e31-9a99-b3df1fed0618-e5efa94f5060.png" loading="lazy" alt="logo Institute of Product Leadership (IPL)" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/94737ec8-f8b7-4164-99f9-5824bdf7ea6d-4cdd3488affe.small.png" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Institute of Product Leadership (IPL)"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Building Creative Confidence</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Institute of Product Leadership (IPL)</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 49</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/business-management/institute-of-product-leadership-ipl-building-creative-confidence?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/496e8de4-f4c2-4395-bfa4-5e9daeb60f1d-f8f8e09793a2.png" loading="lazy" alt="logo The University of Wisconsin-Madison" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/683a6d74-de9f-4b82-a99f-1ab2bf54477c-721588066260.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover The University of Wisconsin-Madison"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Content & Engagement</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">The University of Wisconsin-Madison</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 119</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/teacher-training/the-university-of-wisconsin-madison-content-engagement?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/de3e9ff0-477d-4496-8cfa-a98f902e5830-71b79f0ac34a.png" loading="lazy" alt="logo Rochester Institute of Technology" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/772eb266-036a-4248-ac03-c3c0bac56c70-fdbb956edc7f.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Rochester Institute of Technology"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Critical Thinking & Problem Solving</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Rochester Institute of Technology</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 199</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/critical-thinking-skills/rochester-institute-of-technology-critical-thinking-problem-solving?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/165092b7-5a47-41bd-8109-58e2f088c44f-50f67697a302.png" loading="lazy" alt="logo BoxPlay" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/b8fedeb1-8385-4faa-8018-bad4132f304b-cf1bdb92748b.small.png" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover BoxPlay"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Critical Thinking: How to Develop Critical Thinking Skills</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">BoxPlay</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 69</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/critical-thinking-skills/boxplay-critical-thinking-how-to-develop-critical-thinking-skills?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/de3e9ff0-477d-4496-8cfa-a98f902e5830-71b79f0ac34a.png" loading="lazy" alt="logo Rochester Institute of Technology" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/09b72711-8d25-44b4-bcba-6f0d54218079-5ae8c7e22e92.jpg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Rochester Institute of Technology"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Design Thinking Fundamentals</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Rochester Institute of Technology</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 337</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/design-thinking/rochester-institute-of-technology-design-thinking-fundamentals?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/de3e9ff0-477d-4496-8cfa-a98f902e5830-71b79f0ac34a.png" loading="lazy" alt="logo Rochester Institute of Technology" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/8ed1fd34-0633-4404-87df-72399c4eebb9-0e6f56aed732.jpg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Rochester Institute of Technology"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Design Thinking: Empathizing to Understand the Problem</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Rochester Institute of Technology</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 337</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/design-thinking/rochester-institute-of-technology-design-thinking-empathizing-to-understand-the-problem?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/de3e9ff0-477d-4496-8cfa-a98f902e5830-71b79f0ac34a.png" loading="lazy" alt="logo Rochester Institute of Technology" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/30c03834-f5a3-456a-85d6-bb1c73342038-eb40ada7c074.jpg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Rochester Institute of Technology"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Design Thinking: Ideation, Iteration and Communication</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Rochester Institute of Technology</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 337</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/design-thinking/rochester-institute-of-technology-design-thinking-ideation-iteration-and-communication?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/de3e9ff0-477d-4496-8cfa-a98f902e5830-71b79f0ac34a.png" loading="lazy" alt="logo Rochester Institute of Technology" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/388614ed-1897-4757-aeb5-3547e79b29ed-a43bd5c45eb8.jpg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Rochester Institute of Technology"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Design Thinking: Prototyping and User Testing</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Rochester Institute of Technology</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 337</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/design-thinking/rochester-institute-of-technology-design-thinking-prototyping-and-user-testing?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/496e8de4-f4c2-4395-bfa4-5e9daeb60f1d-f8f8e09793a2.png" loading="lazy" alt="logo The University of Wisconsin-Madison" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/683a6d74-de9f-4b82-a99f-1ab2bf54477c-721588066260.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover The University of Wisconsin-Madison"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Design, Build, & Implement</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">The University of Wisconsin-Madison</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 119</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/education/the-university-of-wisconsin-madison-design-build-implement?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/bc823bd7-b910-4e23-a5fd-ac7283f02c1e-66ced298a065.png" loading="lazy" alt="logo The University of Edinburgh" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/5e2ea83a-3ec3-4461-86ab-94d17ab0c3f0-48921b894e85.small.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover The University of Edinburgh"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Digital Marketing Strategy</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">The University of Edinburgh</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 149</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/digital-marketing/the-university-of-edinburgh-digital-marketing-strategy?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/afb92a21-674a-4636-b83b-17e3fef7243d-82515dc77939.png" loading="lazy" alt="logo Curtin University" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/9a43b119-f4a6-4813-9151-7c228e458ef0-bfcee4cdf33b.png" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Curtin University"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Disability and Digital Media: Accessibility, Representation and Inclusion</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Curtin University</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 179</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/dei-diversity-equity-inclusion/curtin-university-disability-and-digital-media-accessibility-representation-and-inclusion?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/8946fb40-f288-4e05-9275-9e9b4689bda8-e58c545e2296.png" loading="lazy" alt="logo Indiana University" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/8c589ca5-d90b-4ebd-a8e7-ad7967c561de-5095d8dd1e63.png" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Indiana University"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Effective Management and Communication</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Indiana University</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 199</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/management/indiana-university-effective-management-and-communication?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/1767225a-12fb-4aba-a267-b79f6c53bc53-a654c80268a4.png" loading="lazy" alt="logo University of California, Riverside" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/22aefeb9-c66e-4c80-a770-96a42d9d8e48-118fe1dc8000.png" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover University of California, Riverside"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Foundational Approaches to Diversity, Equity, and Inclusion</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">University of California, Riverside</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 99</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/education-teacher-training/university-of-california-riverside-diversity-equity-and-inclusion-dei-lifting-all-voices-in-an-organization?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/1767225a-12fb-4aba-a267-b79f6c53bc53-a654c80268a4.png" loading="lazy" alt="logo Dartmouth College" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/ac5bb669-2b50-4a03-b1e8-16778f9f13b9-2c786a3015df.png" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Dartmouth College"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Fundamentals of Digital Transformation</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Dartmouth College</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 30</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/data-analysis-statistics/dartmouth-college-fundamentals-of-digital-transformation?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/4f8cb2c9-589b-4d1e-88c1-b01a02db3a9c-42611123eb6a.png" loading="lazy" alt="logo edX" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/0e575a39-da1e-4e33-bb3b-e96cc6ffc58e-8372a9a276c1.small.png" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover edX"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">How to Learn Online</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">edX</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 69</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/how-to-learn/edx-how-to-learn-online?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/5f1b3a31-014f-44e0-ade4-829a9d4b8334-00d7ebd79ee5.png" loading="lazy" alt="logo Arm Education" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/b60ef977-73c0-4a0b-8f76-615d4a697996-73bd5b56a5a1.small.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Arm Education"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Introduction to AI</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Arm Education</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 49</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/computer-science/arm-education-introduction-to-ai?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logo_override/a626c6e3-1041-4937-94fe-d144c8355a2d-93a6bc8eb539.png" loading="lazy" alt="logo Harvard University" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/86bd9937-82eb-42c0-9acd-ad32445424d7-9018596b5942.small.jpg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Harvard University"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Introduction to Data Wise: A Collaborative Process to Improve Learning & Teaching</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Harvard University</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 209</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/teacher-training/harvard-university-introduction-to-data-wise-a-collaborative-process-to-improve-learning-teaching?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/496e8de4-f4c2-4395-bfa4-5e9daeb60f1d-f8f8e09793a2.png" loading="lazy" alt="logo The University of Wisconsin-Madison" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/8e55ca5c-8370-4de9-a2f2-00fce10def6e-106b7de9bcba.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover The University of Wisconsin-Madison"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Introduction to Transferable Skills</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">The University of Wisconsin-Madison</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 119</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/education/the-university-of-wisconsin-madison-introduction-to-transferable-skills?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/e9e90c9f-85ec-4ae5-bea8-2ecae2258446-85b6b8c0a212.png" loading="lazy" alt="logo Doane University" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/b8d8a6bf-d997-4b52-9656-32ea91e89a09-3123688dcdfd.small.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Doane University"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Leadership in a Virtual World</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Doane University</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 229</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/leadership/doane-university-leadership-in-a-virtual-world?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/4f8cb2c9-589b-4d1e-88c1-b01a02db3a9c-42611123eb6a.png" loading="lazy" alt="logo edX" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/07e27283-4c0a-4efc-80fb-3864df40632a-6e7170cf7f7e.small.png" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover edX"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Learning How to Learn: Unlocking a Growth Mindset with AI</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">edX</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 49</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/education-teacher-training/edx-learning-strategies-with-ai?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/afb92a21-674a-4636-b83b-17e3fef7243d-82515dc77939.png" loading="lazy" alt="logo Curtin University" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/bc4d1642-8b96-44b0-82e8-be8be6e44f94-e402240f4d2d.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Curtin University"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Managing Study, Stress and Mental Health at University</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Curtin University</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 59</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/mental-health/curtin-university-managing-study-stress-and-mental-health-at-university?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/f5d1ff66-002f-43fa-9d76-1b191d4a3272-0e2420850666.png" loading="lazy" alt="logo University of Adelaide" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/f18fdeea-c53d-4ab0-904f-f193f81dc697-73e10f7d3f64.small.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover University of Adelaide"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Marketing Essentials</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">University of Adelaide</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 125</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/communication/university-of-adelaide-marketing-essentials?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/8946fb40-f288-4e05-9275-9e9b4689bda8-e58c545e2296.png" loading="lazy" alt="logo Indiana University" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/19600717-37ac-47c4-ae8a-1c35e002943a-96a6fc4bbd90.png" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Indiana University"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Preventing Miscommunication in Virtual Work</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Indiana University</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 99</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/remote-work/indiana-university-preventing-miscommunication-in-virtual-work?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/126b2c88-ce11-46e0-8833-71552c03355b-aa8717dcc1ca.png" loading="lazy" alt="logo Fullbridge" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/85383f4a-353b-42f8-9f36-129915bedbef-7a22b0d95e97.jpg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Fullbridge"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Problem Solving and Critical Thinking Skills</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Fullbridge</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 189</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/business-administration/fullbridge-problem-solving-and-critical-thinking-skills-2?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/ac5b634b-1d88-43d5-8199-1142a2e4fc96-0f3719f6fbd4.png" loading="lazy" alt="logo The University of Maryland, College Park" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/16fb6d51-c901-495f-97d7-2f41257e4ec3-ea3b5d5b189d.small.png" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover The University of Maryland, College Park"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Product Design, Prototyping, and Testing</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">The University of Maryland, College Park</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 249</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/product-design/the-university-of-maryland-college-park-product-design-prototyping-and-testing?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/126b2c88-ce11-46e0-8833-71552c03355b-aa8717dcc1ca.png" loading="lazy" alt="logo Fullbridge" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/cda1927e-50ae-42cf-aa97-7f342dfc4961-01edc03e04bb.jpg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Fullbridge"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Self-Assessment – Developing Your Strengths</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Fullbridge</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 189</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/professional-development/fullbridge-self-assessment-developing-your-strengths?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/b5714409-b5f4-4c9d-9348-b0fecbaaddd6-780fbb6c72c7.png" loading="lazy" alt="logo Tsinghua University" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/bc803718-9c0a-4606-ba3f-6cd5352a00e0-36c0762aba6c.small.png" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Tsinghua University"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Shifting Your Teaching Online</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Tsinghua University</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 179</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/education/tsinghua-university-shifting-your-teaching-online?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/87b07564-d569-4cfd-bee6-8b0a407acb73-dc33e4b5f353.png" loading="lazy" alt="logo IBM" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/2be4a4bb-dcf5-46df-a469-5b71b65b0506-a46e368ca0be.png" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover IBM"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Soft Skills: Collaborate Effectively</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">IBM</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 29</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/business-communications/ibm-people-skills-collaborate-effectively?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/496e8de4-f4c2-4395-bfa4-5e9daeb60f1d-f8f8e09793a2.png" loading="lazy" alt="logo The University of Wisconsin-Madison" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/b45bd290-1089-4b20-98b8-408b0203bc7b-676f68add948.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover The University of Wisconsin-Madison"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Teaching Critical Thinking & Self-Regulated Learning Skills</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">The University of Wisconsin-Madison</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 119</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/teacher-training/the-university-of-wisconsin-madison-teaching-critical-thinking-self-regulated-learning-skills?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/496e8de4-f4c2-4395-bfa4-5e9daeb60f1d-f8f8e09793a2.png" loading="lazy" alt="logo The University of Wisconsin-Madison" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/63a4e865-8a8f-4f72-87df-943f02fd4463-8f10b6c704c7.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover The University of Wisconsin-Madison"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Teaching Teamwork & Communication Skills</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">The University of Wisconsin-Madison</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 119</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/teamwork/the-university-of-wisconsin-madison-teaching-teamwork-communication-skills?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/518a47f2-66fb-4529-8902-a4f7ca3002ef-32e55d44aff3.png" loading="lazy" alt="logo Universitat Politècnica de València" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/37d75bed-7ee0-4ed5-96d7-e8bcbceaffac-0b0244e92979.small.jpeg" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Universitat Politècnica de València"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Teamwork in face-to-face, remote and hybrid environments</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Universitat Politècnica de València</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 49</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/teamwork/universitat-politecnica-de-valencia-teamwork-in-face-to-face-remote-and-hybrid-environments?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+								<div class="col">
+									<div class="card h-100 shadow-sm">
+										<div class="position-relative p-2">
+											<div class="logo-wrapper position-absolute bottom-0 start-0 ms-3 mb-2 bg-white p-2 rounded shadow-sm" style="height:65px;width:200px;z-index:2;display:flex;align-items:center;justify-content:center"><img src="https://prod-discovery.edx-cdn.org/organization/logos/896bbb25-cf7e-4f80-8ac1-477199c305ef-0a7d5b6c30e9.png" loading="lazy" alt="logo Microsoft" style="max-height:100%;max-width:100%;object-fit:contain"></div>
+											<div class="ratio ratio-16x9"><img src="https://prod-discovery.edx-cdn.org/media/course/image/063a76a8-ab8e-4c48-8126-49aa81373f3a-a55128711307.small.png" loading="lazy" class="rounded bg-white card-img-top object-fit-cover w-100 h-100" alt="cover Microsoft"></div>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">Use AI for Everyday Tasks</h5>
+											<h6 class="card-subtitle text-muted" style="font-size:1.13rem">Microsoft</h6>
+											<div class="my-3"><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Course</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">Tidak Terbatas</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">$ 20</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">30 Juli - 30 Desember 2025</span></div>
+										</div>
+										<div class="card-footer d-grid gap-3"><a class="btn btn-primary" href="https://www.edx.org/learn/computer-science/microsoft-use-ai-for-everyday-tasks?utm_source=enterprise_catalog_worker&utm_medium=affiliate_partner&utm_source=indonesia-cyber-education-institute-ice" target="_blank">Detail</a></div>
+									</div>
+								</div>
+							</div>
+							<!-- akhir dari paket C -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+	<footer class="pt-4 my-md-5 pt-md-5 border-top">
+		<div class="container">
+			<div class="row">
+				<div class="col-8">
+					<div class="wrapper-logo">
+						<p>
+							<a href="/"> <img alt="organization logo" height="50em" src="https://icei.ac.id/static/comprehensive/images/ICE_Institute_logo.0efdedb304d8.png"> </a>
+						</p>
+					</div>
+					<p class="copyright">ICE Institute is your hub to study anywhere and anytime at the campus of your choice! Now you can learn from all the best universities around the globe.</p>
+					<nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto fw-bold"> <a class="me-3 py-2 text-decoration-none" href="https://icei.ac.id/">Home</a> <a class="me-3 py-2 text-decoration-none" href="https://icei.ac.id/tracks/about/">About</a> <a class="me-3 py-2 text-decoration-none" href="https://icei.ac.id/courses">Courses</a> <a class="me-3 py-2 text-decoration-none" href="https://icei.ac.id/tracks/institusi">Universities</a> <a class="me-3 py-2 text-decoration-none" href="https://verify.accredible.com/input">Certificate</a> <a class="me-3 py-2 text-decoration-none" href="https://icei.ac.id/faq">FAQs</a> <a class="me-3 py-2 text-decoration-none" href="https://icei.ac.id/hubungi-kami">Contact</a> <a class="py-2 text-decoration-none" href="https://icei.ac.id/user-guide">Help</a> </nav>
+				</div>
+				<div class="col-4 border-start">
+					<div class="footer_last_child">
+						<h5 style="color:red">Address</h5>
+						<p style="font-size:14px">ICE Institute
+							<br>Universitas Terbuka
+							<br>Gedung LPPMP Lantai 2
+							<br>Jl. Cabe Raya Pondok Cabe, Pamulang,
+							<br>Tangerang Selatan Banten - 15437
+							<br> <i class="fa fa-phone"></i>&nbsp;0812 5050 4200
+							<br> <span style="color:red;display:inline-block!important">
                   <i style="color:#000" class="fa fa-envelope"></i>&nbsp; <a style="display:block!important;font-weight:400!important" href="mailto:sekretariat@icei.ac.id">sekretariat@icei.ac.id</a>
                 </span>
-                <br>
-                <span style="color:red;display:inline-block!important">
+							<br> <span style="color:red;display:inline-block!important">
                   <i style="color:#000" class="fa fa-globe"></i>&nbsp; <a style="display:block!important;font-weight:400!important" href="https://dev-lms.icei.ac.id">www.icei.ac.id</a>
                 </span>
-                <br>
-              </p>
-              <div class="sc_icons_container" style="display:flex;justify-content:flex-start">
-                <div>
-                  <a href="https://www.facebook.com/ice.institut">
-                    <img style="max-width:35px" src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Facebook_colored_svg_copy-128.png">
-                  </a>
-                  <a></a>
-                </div>
-                <a></a>
-                <div>
-                  <a></a>
-                  <a href="https://twitter.com/ice_institute_">
-                    <img style="max-width:35px" src="https://www.baa.org/sites/default/files/2023-09/x_footer.png">
-                  </a>
-                  <a></a>
-                </div>
-                <a></a>
-                <div>
-                  <a></a>
-                  <a href="https://www.instagram.com/ice.institute/">
-                    <img style="max-width:35px" src="https://cdn0.iconfinder.com/data/icons/social-media-circle-6/1024/instagram-128.png">
-                  </a>
-                  <a></a>
-                </div>
-                <a></a>
-                <div>
-                  <a></a>
-                  <a href="https://www.youtube.com/channel/UC2tFtypIqAUXk3FK6V4a5cg">
-                    <img style="max-width:35px" src="https://cdn3.iconfinder.com/data/icons/capsocial-round/500/youtube3-128.png">
-                  </a>
-                  <a></a>
-                </div>
-                <a></a>
-                <div>
-                  <a></a>
-                  <a href="https://www.linkedin.com/in/ice-institute-9372b1218">
-                    <img style="max-width:35px" src="https://cdn3.iconfinder.com/data/icons/free-social-icons/67/linkedin_circle_color-128.png">
-                  </a>
-                  <a></a>
-                </div>
-                <a></a>
-                <div>
-                  <a></a>
-                  <a href="https://api.whatsapp.com/send/?phone=6281250504200&amp;text&amp;app_absent=0">
-                    <img style="max-width:35px" src="https://cdn0.iconfinder.com/data/icons/social-circle-3/72/Whatsapp-128.png">
-                  </a>
-                  <a></a>
-                </div>
-                <a></a>
-              </div>
-              <a></a>
-            </div>
-            <a></a>
-          </div>
-        </div>
-      </div>
-    </footer>
-    <script>
-      // Fungsi untuk menampilkan body yang sesuai
-      function showBody(bodyNumber) {
-        // Sembunyikan semua body content terlebih dahulu
-        document.querySelectorAll('.body-content').forEach(body => {
-          body.classList.remove('active');
-        });
-        // Hapus class active dari semua card
-        document.querySelectorAll('.card').forEach(card => {
-          card.classList.remove('active');
-        });
-        // Tampilkan body yang dipilih
-        document.getElementById('body' + bodyNumber).classList.add('active');
-        // Tambahkan class active ke card yang diklik
-        document.getElementById('card' + bodyNumber).classList.add('active');
-      }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-  </body>
+							<br> </p>
+						<div class="sc_icons_container" style="display:flex;justify-content:flex-start">
+							<div>
+								<a href="https://www.facebook.com/ice.institut"> <img style="max-width:35px" src="https://cdn2.iconfinder.com/data/icons/social-media-2285/512/1_Facebook_colored_svg_copy-128.png"> </a>
+								<a></a>
+							</div>
+							<a></a>
+							<div>
+								<a></a>
+								<a href="https://twitter.com/ice_institute_"> <img style="max-width:35px" src="https://www.baa.org/sites/default/files/2023-09/x_footer.png"> </a>
+								<a></a>
+							</div>
+							<a></a>
+							<div>
+								<a></a>
+								<a href="https://www.instagram.com/ice.institute/"> <img style="max-width:35px" src="https://cdn0.iconfinder.com/data/icons/social-media-circle-6/1024/instagram-128.png"> </a>
+								<a></a>
+							</div>
+							<a></a>
+							<div>
+								<a></a>
+								<a href="https://www.youtube.com/channel/UC2tFtypIqAUXk3FK6V4a5cg"> <img style="max-width:35px" src="https://cdn3.iconfinder.com/data/icons/capsocial-round/500/youtube3-128.png"> </a>
+								<a></a>
+							</div>
+							<a></a>
+							<div>
+								<a></a>
+								<a href="https://www.linkedin.com/in/ice-institute-9372b1218"> <img style="max-width:35px" src="https://cdn3.iconfinder.com/data/icons/free-social-icons/67/linkedin_circle_color-128.png"> </a>
+								<a></a>
+							</div>
+							<a></a>
+							<div>
+								<a></a>
+								<a href="https://api.whatsapp.com/send/?phone=6281250504200&amp;text&amp;app_absent=0"> <img style="max-width:35px" src="https://cdn0.iconfinder.com/data/icons/social-circle-3/72/Whatsapp-128.png"> </a>
+								<a></a>
+							</div>
+							<a></a>
+						</div>
+						<a></a>
+					</div>
+					<a></a>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<script>
+	// Fungsi untuk menampilkan body yang sesuai
+	function showBody(bodyNumber) {
+		// Sembunyikan semua body content terlebih dahulu
+		document.querySelectorAll('.body-content').forEach(body => {
+			body.classList.remove('active');
+		});
+		// Hapus class active dari semua card
+		document.querySelectorAll('.card').forEach(card => {
+			card.classList.remove('active');
+		});
+		// Tampilkan body yang dipilih
+		document.getElementById('body' + bodyNumber).classList.add('active');
+		// Tambahkan class active ke card yang diklik
+		document.getElementById('card' + bodyNumber).classList.add('active');
+	}
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+</body>
+
 </html>
