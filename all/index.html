@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sheet Browser</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,.6); display: none; align-items: center; justify-content: center; z-index: 9999; }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="loading-overlay" id="loading">
+      <div class="spinner-border" role="status"><span class="visually-hidden">Loading…</span></div>
+    </div>
+
+    <div class="container py-4">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="h4 m-0">Google Sheet Browser</h1>
+        <a class="btn btn-outline-secondary btn-sm" href="#" id="btn-refresh">Refresh</a>
+      </div>
+
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <div class="row g-2 align-items-end">
+            <div class="col-md-6">
+              <label class="form-label">Search (q):</label>
+              <input type="search" class="form-control" id="input-q" placeholder="Type to filter across all columns…">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Sort by:</label>
+              <input type="text" class="form-control" id="input-sort" placeholder="e.g. Nama or -Tanggal">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Select columns (comma separated):</label>
+              <input type="text" class="form-control" id="input-select" placeholder="e.g. Nama,Instansi,Tanggal">
+            </div>
+          </div>
+          <div class="row g-2 mt-2">
+            <div class="col-md-3">
+              <label class="form-label">Limit:</label>
+              <input type="number" class="form-control" id="input-limit" value="50" min="1" max="1000">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Offset:</label>
+              <input type="number" class="form-control" id="input-offset" value="0" min="0">
+            </div>
+            <div class="col-md-6 text-md-end d-grid d-md-block mt-3 mt-md-0">
+              <button class="btn btn-primary" id="btn-apply">Apply</button>
+              <button class="btn btn-outline-secondary" id="btn-clear">Clear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div><span id="meta-total" class="fw-semibold">0</span> total rows</div>
+        <div class="btn-group" role="group">
+          <button class="btn btn-outline-primary" id="prev">« Prev</button>
+          <button class="btn btn-outline-primary" id="next">Next »</button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-sm table-striped table-hover align-middle" id="data-table">
+          <thead class="table-light"><tr id="thead-row"></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      // 1) Replace with your deployed Web App URL (…/exec)
+      const API_URL = 'https://script.google.com/macros/s/AKfycbwphVxeXWqOHpIhvAr8wlMqSYvErzNWtjS7kx0DtgZiXeAzNgCmJHMYrGdWs8q2l6neYQ/exec';
+
+      // NOTE: If your environment blocks CORS, you can use JSONP by appending &callback=handleData
+      // and injecting a <script> tag. See loadDataJSONP() below.
+
+      const el = {
+        q: document.getElementById('input-q'),
+        sort: document.getElementById('input-sort'),
+        select: document.getElementById('input-select'),
+        limit: document.getElementById('input-limit'),
+        offset: document.getElementById('input-offset'),
+        apply: document.getElementById('btn-apply'),
+        clear: document.getElementById('btn-clear'),
+        prev: document.getElementById('prev'),
+        next: document.getElementById('next'),
+        metaTotal: document.getElementById('meta-total'),
+        theadRow: document.getElementById('thead-row'),
+        tbody: document.getElementById('tbody'),
+        loading: document.getElementById('loading'),
+        refresh: document.getElementById('btn-refresh')
+      };
+
+      let lastQuery = {};
+
+      function showLoading(v){ el.loading.style.display = v ? 'flex' : 'none'; }
+
+      async function loadData() {
+        const params = new URLSearchParams();
+        const q = el.q.value.trim();
+        const sort = el.sort.value.trim();
+        const select = el.select.value.trim();
+        const limit = Math.max(1, parseInt(el.limit.value || '50', 10));
+        const offset = Math.max(0, parseInt(el.offset.value || '0', 10));
+
+        if (q) params.set('q', q);
+        if (sort) params.set('sort', sort);
+        if (select) params.set('select', select);
+        params.set('limit', String(limit));
+        params.set('offset', String(offset));
+
+        lastQuery = { q, sort, select, limit, offset };
+
+        showLoading(true);
+        try {
+          const res = await fetch(API_URL + '?' + params.toString(), { method: 'GET' });
+          const data = await res.json();
+          render(data);
+        } catch (err) {
+          console.error(err);
+          // Fallback attempt: JSONP if fetch fails
+          loadDataJSONP(params);
+        } finally {
+          showLoading(false);
+        }
+      }
+
+      // JSONP fallback (in case CORS is blocked)
+      function loadDataJSONP(params) {
+        const cb = 'handleData_' + Date.now();
+        window[cb] = function(data){ render(data); cleanup(); };
+        function cleanup(){ delete window[cb]; script.remove(); }
+        const script = document.createElement('script');
+        script.src = API_URL + '?' + params.toString() + '&callback=' + cb;
+        script.onerror = cleanup;
+        document.body.appendChild(script);
+      }
+
+      function render(payload) {
+        if (!payload || !payload.ok) {
+          el.metaTotal.textContent = '0';
+          el.theadRow.innerHTML = '';
+          el.tbody.innerHTML = '<tr><td class="text-danger">Failed to load data.</td></tr>';
+          return;
+        }
+
+        const cols = payload.columns && payload.columns.length
+          ? payload.columns
+          : (payload.data[0] ? Object.keys(payload.data[0]) : []);
+
+        el.metaTotal.textContent = payload.total || 0;
+        el.theadRow.innerHTML = cols.map(c => `<th>${escapeHtml(c)}</th>`).join('');
+        el.tbody.innerHTML = (payload.data || []).map(row => {
+          const tds = cols.map(c => `<td>${escapeHtml(row[c] ?? '')}</td>`).join('');
+          return `<tr>${tds}</tr>`;
+        }).join('');
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#039;');
+      }
+
+      // Events
+      el.apply.addEventListener('click', () => { el.offset.value = '0'; loadData(); });
+      el.clear.addEventListener('click', () => {
+        el.q.value = ''; el.sort.value=''; el.select.value=''; el.limit.value='50'; el.offset.value='0';
+        loadData();
+      });
+      el.prev.addEventListener('click', () => {
+        const offset = Math.max(0, (parseInt(el.offset.value||'0',10) - parseInt(el.limit.value||'50',10)));
+        el.offset.value = String(offset); loadData();
+      });
+      el.next.addEventListener('click', () => {
+        const offset = Math.max(0, (parseInt(el.offset.value||'0',10) + parseInt(el.limit.value||'50',10)));
+        el.offset.value = String(offset); loadData();
+      });
+      el.refresh.addEventListener('click', (e) => { e.preventDefault(); loadData(); });
+
+      // Initial load
+      loadData();
+    </script>
+  </body>
+</html>
