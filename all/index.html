@@ -1,190 +1,378 @@
-<!doctype html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sheet Browser</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Katalog All Courses ICE Institute</title>
+    <script src="../load-components.js"></script>
+    <script src="../load-head.js"></script>
+    <script src="../load-components.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <style>
-      .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,.6); display: none; align-items: center; justify-content: center; z-index: 9999; }
+      .placeholder-card {
+        height: 220px;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        background-color: #f8f9fa;
+        animation: pulse 1.5s infinite;
+      }
+      @keyframes pulse {
+        0% { background-color: #f8f9fa; }
+        50% { background-color: #e9ecef; }
+        100% { background-color: #f8f9fa; }
+      }
     </style>
   </head>
-  <body class="bg-light">
-    <div class="loading-overlay" id="loading">
-      <div class="spinner-border" role="status"><span class="visually-hidden">Loading…</span></div>
-    </div>
+  <body>
+    <div id="header"></div>
 
-    <div class="container py-4">
-      <div class="d-flex align-items-center justify-content-between mb-3">
-        <h1 class="h4 m-0">Google Sheet Browser</h1>
-        <a class="btn btn-outline-secondary btn-sm" href="#" id="btn-refresh">Refresh</a>
+    <main class="container py-3">
+      <div class="col-10 px-4 py-5 my-5 text-center mx-auto">
+        <h1 class="display-5 fw-bold text-body-emphasis">Katalog ICE Institute</h1>
       </div>
 
-      <div class="card shadow-sm mb-3">
-        <div class="card-body">
-          <div class="row g-2 align-items-end">
-            <div class="col-md-6">
-              <label class="form-label">Search (q):</label>
-              <input type="search" class="form-control" id="input-q" placeholder="Type to filter across all columns…">
-            </div>
-            <div class="col-md-3">
-              <label class="form-label">Sort by:</label>
-              <input type="text" class="form-control" id="input-sort" placeholder="e.g. Nama or -Tanggal">
-            </div>
-            <div class="col-md-3">
-              <label class="form-label">Select columns (comma separated):</label>
-              <input type="text" class="form-control" id="input-select" placeholder="e.g. Nama,Instansi,Tanggal">
-            </div>
-          </div>
-          <div class="row g-2 mt-2">
-            <div class="col-md-3">
-              <label class="form-label">Limit:</label>
-              <input type="number" class="form-control" id="input-limit" value="50" min="1" max="1000">
-            </div>
-            <div class="col-md-3">
-              <label class="form-label">Offset:</label>
-              <input type="number" class="form-control" id="input-offset" value="0" min="0">
-            </div>
-            <div class="col-md-6 text-md-end d-grid d-md-block mt-3 mt-md-0">
-              <button class="btn btn-primary" id="btn-apply">Apply</button>
-              <button class="btn btn-outline-secondary" id="btn-clear">Clear</button>
-            </div>
-          </div>
+      
+      <h1 class="fw-bold text-body-emphasis">Search our catalog</h1>
+      <div class="input-group mb-3">
+		  <span class="input-group-text" id="basic-addon1"><i class="bi bi-search" style="font-size: 2rem;"></i></span>
+		  <input type="text" id="searchInput" class="form-control form-control-lg" style="font-size: 2rem;">
+		</div>
+
+      <!-- FILTERS ROW -->
+      <div class="row g-2 align-items-center mb-3" id="filtersRow" style="display:none;">
+        <div class="col-12 col-md-4">
+          <select id="filterInstitution" class="form-select">
+            <option value="">Semua Institusi</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-4">
+          <select id="filterCategory" class="form-select">
+            <option value="">Semua Kategori</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <select id="filterPacing" class="form-select">
+            <option value="">Semua Tipe</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <select id="filterLevel" class="form-select">
+            <option value="">Semua Level</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <select id="filterSkills" class="form-select">
+            <option value="">Semua Skill</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <select id="filterBahasa" class="form-select">
+            <option value="">Semua Bahasa</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-2 d-grid">
+          <button id="btnResetFilters" class="btn btn-outline-secondary">Reset</button>
         </div>
       </div>
 
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <div><span id="meta-total" class="fw-semibold">0</span> total rows</div>
-        <div class="btn-group" role="group">
-          <button class="btn btn-outline-primary" id="prev">« Prev</button>
-          <button class="btn btn-outline-primary" id="next">Next »</button>
-        </div>
-      </div>
+      <div class="mb-2 text-end text-muted" id="dataInfo"></div>
 
-      <div class="table-responsive">
-        <table class="table table-sm table-striped table-hover align-middle" id="data-table">
-          <thead class="table-light"><tr id="thead-row"></tr></thead>
-          <tbody id="tbody"></tbody>
-        </table>
-      </div>
-    </div>
+      <div id="cardContainer" class="row g-4"></div>
+
+      <nav class="mt-4">
+        <ul class="pagination justify-content-center" id="pagination"></ul>
+      </nav>
+    </main>
+
+    <div id="footer"></div>
 
     <script>
-      // 1) Replace with your deployed Web App URL (…/exec)
-      const API_URL = 'https://script.google.com/macros/s/AKfycbwphVxeXWqOHpIhvAr8wlMqSYvErzNWtjS7kx0DtgZiXeAzNgCmJHMYrGdWs8q2l6neYQ/exec';
+      const apiUrl = "https://script.google.com/macros/s/AKfycbwphVxeXWqOHpIhvAr8wlMqSYvErzNWtjS7kx0DtgZiXeAzNgCmJHMYrGdWs8q2l6neYQ/exec"; // URL GAS kamu
+      let allData = [];
+      let filteredData = [];
+      const itemsPerPage = 12;
+      let currentPage = 1;
 
-      // NOTE: If your environment blocks CORS, you can use JSONP by appending &callback=handleData
-      // and injecting a <script> tag. See loadDataJSONP() below.
-
+      // Elemen
       const el = {
-        q: document.getElementById('input-q'),
-        sort: document.getElementById('input-sort'),
-        select: document.getElementById('input-select'),
-        limit: document.getElementById('input-limit'),
-        offset: document.getElementById('input-offset'),
-        apply: document.getElementById('btn-apply'),
-        clear: document.getElementById('btn-clear'),
-        prev: document.getElementById('prev'),
-        next: document.getElementById('next'),
-        metaTotal: document.getElementById('meta-total'),
-        theadRow: document.getElementById('thead-row'),
-        tbody: document.getElementById('tbody'),
-        loading: document.getElementById('loading'),
-        refresh: document.getElementById('btn-refresh')
+        search: document.getElementById("searchInput"),
+        info: document.getElementById("dataInfo"),
+        cards: document.getElementById("cardContainer"),
+        pagination: document.getElementById("pagination"),
+        filtersRow: document.getElementById("filtersRow"),
+        fInstitution: document.getElementById("filterInstitution"),
+        fCategory: document.getElementById("filterCategory"),
+        fPacing: document.getElementById("filterPacing"),
+        fLevel: document.getElementById("filterLevel"),
+        fSkills: document.getElementById("filterSkills"),
+        fBahasa: document.getElementById("filterBahasa"),
+        btnReset: document.getElementById("btnResetFilters")
       };
 
-      let lastQuery = {};
+      // Helper: lower-case aman
+      const lc = v => (v ?? "").toString().toLowerCase();
 
-      function showLoading(v){ el.loading.style.display = v ? 'flex' : 'none'; }
+      // Helper: ambil nilai unik terurut (single value)
+      function uniqueValues(arr, key) {
+        const s = new Set();
+        arr.forEach(it => s.add((it?.[key] ?? "").toString().trim()));
+        const list = Array.from(s).filter(v => v);
+        list.sort((a,b) => a.localeCompare(b, 'id'));
+        return list;
+      }
 
-      async function loadData() {
-        const params = new URLSearchParams();
-        const q = el.q.value.trim();
-        const sort = el.sort.value.trim();
-        const select = el.select.value.trim();
-        const limit = Math.max(1, parseInt(el.limit.value || '50', 10));
-        const offset = Math.max(0, parseInt(el.offset.value || '0', 10));
+      // Helper: ambil nilai unik terurut, split ';'
+      function uniqueValuesSplit(arr, key) {
+        const s = new Set();
+        arr.forEach(it => {
+          const raw = (it?.[key] ?? '').toString();
+          raw.split(';').forEach(part => {
+            const v = part.trim();
+            if (v) s.add(v);
+          });
+        });
+        return Array.from(s).sort((a,b) => a.localeCompare(b, 'id'));
+      }
 
-        if (q) params.set('q', q);
-        if (sort) params.set('sort', sort);
-        if (select) params.set('select', select);
-        params.set('limit', String(limit));
-        params.set('offset', String(offset));
-
-        lastQuery = { q, sort, select, limit, offset };
-
-        showLoading(true);
+      async function fetchData() {
         try {
-          const res = await fetch(API_URL + '?' + params.toString(), { method: 'GET' });
+          const res = await fetch(apiUrl);
           const data = await res.json();
-          render(data);
+          allData = Array.isArray(data) ? data : [];
+          populateFilters(allData);
+          applyFiltersAndRender(1);
         } catch (err) {
+          el.cards.innerHTML = "<p class='text-danger'>Gagal memuat data.</p>";
           console.error(err);
-          // Fallback attempt: JSONP if fetch fails
-          loadDataJSONP(params);
-        } finally {
-          showLoading(false);
         }
       }
 
-      // JSONP fallback (in case CORS is blocked)
-      function loadDataJSONP(params) {
-        const cb = 'handleData_' + Date.now();
-        window[cb] = function(data){ render(data); cleanup(); };
-        function cleanup(){ delete window[cb]; script.remove(); }
-        const script = document.createElement('script');
-        script.src = API_URL + '?' + params.toString() + '&callback=' + cb;
-        script.onerror = cleanup;
-        document.body.appendChild(script);
+      function populateFilters(data) {
+        // Institution, Category, Level, Skills -> split ';' (multi-value)
+        const institutions = uniqueValuesSplit(data, "institution");
+        const categories   = uniqueValuesSplit(data, "category");
+        const levels       = uniqueValuesSplit(data, "level");
+        const skills       = uniqueValuesSplit(data, "skill");
+
+        // Pacing & Bahasa tetap single value (kalau perlu bisa di-split juga)
+        const pacings      = uniqueValues(data, "pacing_or_type");
+        const bahasas      = uniqueValues(data, "bahasa");
+
+        const hasAny = institutions.length || categories.length || pacings.length || levels.length || skills.length || bahasas.length;
+        el.filtersRow.style.display = hasAny ? "" : "none";
+
+        fillSelect(el.fInstitution, institutions, "Semua Institusi");
+        fillSelect(el.fCategory, categories, "Semua Kategori");
+        fillSelect(el.fPacing, pacings, "Semua Tipe");
+        fillSelect(el.fLevel, levels, "Semua Level");
+        fillSelect(el.fSkills, skills, "Semua Skill");
+        fillSelect(el.fBahasa, bahasas, "Semua Bahasa");
       }
 
-      function render(payload) {
-        if (!payload || !payload.ok) {
-          el.metaTotal.textContent = '0';
-          el.theadRow.innerHTML = '';
-          el.tbody.innerHTML = '<tr><td class="text-danger">Failed to load data.</td></tr>';
-          return;
-        }
+      function fillSelect(selectEl, values, placeholder) {
+        const current = selectEl.value;
+        const opts = ['<option value="">' + placeholder + '</option>']
+          .concat(values.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`));
+        selectEl.innerHTML = opts.join("");
+        if (values.includes(current)) selectEl.value = current;
+      }
 
-        const cols = payload.columns && payload.columns.length
-          ? payload.columns
-          : (payload.data[0] ? Object.keys(payload.data[0]) : []);
+      function applyFiltersAndRender(page = 1) {
+        // Kondisi dari UI
+        const kw        = lc(el.search.value);
+        const instSel   = lc(el.fInstitution.value);
+        const catSel    = lc(el.fCategory.value);
+        const paceSel   = lc(el.fPacing.value);
+        const levelSel  = lc(el.fLevel.value);
+        const skillSel  = lc(el.fSkills.value);
+        const bahasaSel = lc(el.fBahasa.value);
 
-        el.metaTotal.textContent = payload.total || 0;
-        el.theadRow.innerHTML = cols.map(c => `<th>${escapeHtml(c)}</th>`).join('');
-        el.tbody.innerHTML = (payload.data || []).map(row => {
-          const tds = cols.map(c => `<td>${escapeHtml(row[c] ?? '')}</td>`).join('');
-          return `<tr>${tds}</tr>`;
+        filteredData = allData.filter(item => {
+          // Search global
+          const matchesSearch = !kw || (
+            lc(item.course_name).includes(kw) ||
+            lc(item.institution).includes(kw) ||
+            lc(item.category).includes(kw) ||
+            lc(item.skills).includes(kw)
+          );
+
+          // Institution (multi)
+          const instParts = (item.institution ?? '').toString().split(';').map(s => lc(s.trim())).filter(Boolean);
+          const matchesInst = !instSel || instParts.includes(instSel);
+
+          // Category (multi)
+          const catParts = (item.category ?? '').toString().split(';').map(s => lc(s.trim())).filter(Boolean);
+          const matchesCat = !catSel || catParts.includes(catSel);
+
+          // Level (multi)
+          const levelParts = (item.level ?? '').toString().split(';').map(s => lc(s.trim())).filter(Boolean);
+          const matchesLevel = !levelSel || levelParts.includes(levelSel);
+
+          // Skills (multi)
+          const skillParts = (item.skill ?? '').toString().split(';').map(s => lc(s.trim())).filter(Boolean);
+          const matchesSkill = !skillSel || skillParts.includes(skillSel);
+
+          // Pacing & Bahasa (single / exact)
+          const matchesPace = !paceSel || lc(item.pacing_or_type) === paceSel;
+          const matchesBahasa = !bahasaSel || lc(item.bahasa) === bahasaSel;
+
+          return matchesSearch && matchesInst && matchesCat && matchesLevel && matchesSkill && matchesPace && matchesBahasa;
+        });
+
+        renderPage(page);
+      }
+
+      function renderPage(page) {
+        currentPage = page;
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const pageItems = filteredData.slice(start, end);
+
+        const DEFAULT_COVER = 'https://iceinstitut.github.io/image/aset/cover-default.jpg';
+
+        el.cards.innerHTML = pageItems.map(item => {
+          const courseName = (item.course_name ?? '').toString();
+          const institution = (item.institution ?? '').toString();
+
+          // Logo partner (maks 6)
+          const logos = ((item.partner_logo ?? '').toString().split(';')
+            .map(s => s.trim())
+            .filter(Boolean)
+            .slice(0, 6)
+            .map(url => `
+              <img src="${escapeAttr(url)}"
+                   class="rounded bg-body p-1 shadow-sm border"
+                   style="height:32px"
+                   loading="lazy"
+                   alt="partner_logo ${escapeAttr(institution)}">
+            `).join(''));
+
+          // Badge helper
+          const badge = (val, prefix = '') => {
+            const v = (val ?? '').toString().trim();
+            return v ? `<span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">${escapeHtml(prefix ? `${prefix} ${v}` : v)}</span>` : '';
+          };
+
+          return `
+            <div class="col-md-6 col-lg-3">
+              <div class="card h-100 shadow-sm border rounded-4">
+                <!-- Cover + overlay logo -->
+                <div class="ratio ratio-16x9 position-relative">
+                  <img src="${escapeAttr(item.card_image || DEFAULT_COVER)}"
+                       loading="lazy"
+                       class="object-fit-cover w-100 h-100 rounded-4 p-2"
+                       alt="cover ${escapeAttr(courseName)}">
+                  ${
+                    logos
+                      ? `
+                        <div class="position-absolute d-flex flex-wrap gap-1"
+                             style="left:.50rem; bottom:0; transform:translateY(90%); z-index:2;">
+                          ${logos}
+                        </div>
+                      `
+                      : ''
+                  }
+                </div>
+
+                <div class="card-body pt-4">
+                  <h5 class="card-title mb-1">${escapeHtml(courseName)}</h5>
+                  <h6 class="card-subtitle text-muted mb-3" style="font-size:1.05rem;">${escapeHtml(institution)}</h6>
+                  <div class="d-flex flex-wrap">
+                    ${badge(item.start_date)}
+                    ${badge(item.end_date, 'Course :')}
+                    ${badge(item.level)}
+                    ${badge(item.pacing_or_type)}
+                    ${badge(item.bahasa)}
+                    ${badge(item.tipe)}
+                    ${badge(item.platform)}
+                  </div>
+                </div>
+
+                <div class="card-footer bg-transparent border-0 pt-0 pb-3">
+                  <a class="btn btn-light w-100"
+                     href="${escapeAttr(item.course_url || '#')}"
+                     target="_blank" rel="noopener">
+                     Course Detail
+                  </a>
+                </div>
+              </div>
+            </div>
+          `;
         }).join('');
+
+        renderPagination();
+        updateDataInfo(start, end, filteredData.length, allData.length);
       }
 
+      function renderPagination() {
+        const totalPages = Math.max(1, Math.ceil(filteredData.length / itemsPerPage));
+        const prevDisabled = currentPage === 1 ? "disabled" : "";
+        const nextDisabled = currentPage >= totalPages ? "disabled" : "";
+        el.pagination.innerHTML = `
+          <li class="page-item ${prevDisabled}">
+            <a class="page-link" href="#" onclick="return goPage(${currentPage - 1})">Sebelumnya</a>
+          </li>
+          <li class="page-item disabled">
+            <a class="page-link" href="#">${currentPage} / ${totalPages}</a>
+          </li>
+          <li class="page-item ${nextDisabled}">
+            <a class="page-link" href="#" onclick="return goPage(${currentPage + 1})">Berikutnya</a>
+          </li>
+        `;
+      }
+
+      // pagination handler
+      window.goPage = function(n) {
+        if (n < 1) return false;
+        const totalPages = Math.max(1, Math.ceil(filteredData.length / itemsPerPage));
+        if (n > totalPages) return false;
+        renderPage(n);
+        return false;
+      };
+
+      function updateDataInfo(start, end, totalFiltered, totalAll) {
+        const shownEnd = Math.min(end, totalFiltered);
+        el.info.textContent = `Menampilkan ${totalFiltered ? (start + 1) : 0} - ${shownEnd} dari ${totalFiltered} data • Total ${totalAll}`;
+      }
+
+      // escape
       function escapeHtml(str) {
-        return String(str)
-          .replaceAll('&', '&amp;')
-          .replaceAll('<', '&lt;')
-          .replaceAll('>', '&gt;')
-          .replaceAll('"', '&quot;')
-          .replaceAll("'", '&#039;');
+        return String(str ?? '')
+          .replaceAll('&','&amp;')
+          .replaceAll('<','&lt;')
+          .replaceAll('>','&gt;')
+          .replaceAll('"','&quot;')
+          .replaceAll("'","&#039;");
       }
+      function escapeAttr(str){ return escapeHtml(str).replaceAll('\n',' '); }
 
-      // Events
-      el.apply.addEventListener('click', () => { el.offset.value = '0'; loadData(); });
-      el.clear.addEventListener('click', () => {
-        el.q.value = ''; el.sort.value=''; el.select.value=''; el.limit.value='50'; el.offset.value='0';
-        loadData();
+      // Listeners
+      el.search.addEventListener("input", () => applyFiltersAndRender(1));
+      el.fInstitution.addEventListener("change", () => applyFiltersAndRender(1));
+      el.fCategory.addEventListener("change", () => applyFiltersAndRender(1));
+      el.fPacing.addEventListener("change", () => applyFiltersAndRender(1));
+      el.fLevel.addEventListener("change", () => applyFiltersAndRender(1));
+      el.fSkills.addEventListener("change", () => applyFiltersAndRender(1));
+      el.fBahasa.addEventListener("change", () => applyFiltersAndRender(1));
+      el.btnReset.addEventListener("click", () => {
+        el.search.value = "";
+        el.fInstitution.value = "";
+        el.fCategory.value = "";
+        el.fPacing.value = "";
+        el.fLevel.value = "";
+        el.fSkills.value = "";
+        el.fBahasa.value = "";
+        applyFiltersAndRender(1);
       });
-      el.prev.addEventListener('click', () => {
-        const offset = Math.max(0, (parseInt(el.offset.value||'0',10) - parseInt(el.limit.value||'50',10)));
-        el.offset.value = String(offset); loadData();
-      });
-      el.next.addEventListener('click', () => {
-        const offset = Math.max(0, (parseInt(el.offset.value||'0',10) + parseInt(el.limit.value||'50',10)));
-        el.offset.value = String(offset); loadData();
-      });
-      el.refresh.addEventListener('click', (e) => { e.preventDefault(); loadData(); });
 
-      // Initial load
-      loadData();
+      // Placeholder skeleton sebelum fetch
+      document.addEventListener("DOMContentLoaded", () => {
+        el.cards.innerHTML = Array.from({ length: 12 }).map(() => `
+          <div class="col-md-6 col-lg-3">
+            <div class="placeholder-card p-3"></div>
+          </div>
+        `).join("");
+        fetchData();
+      });
     </script>
   </body>
 </html>
