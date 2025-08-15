@@ -228,6 +228,8 @@
         el.cards.innerHTML = pageItems.map(item => {
           const courseName = (item.course_name ?? '').toString();
           const institution = (item.institution ?? '').toString();
+          const start_date = (item.start_date ?? '').toString();
+          const end_date = (item.end_date ?? '').toString();
 
           // Logo partner (maks 6)
           const logos = ((item.partner_logo ?? '').toString().split(';')
@@ -272,9 +274,9 @@
                 <div class="card-body pt-4">
                   <h5 class="card-title mb-1">${escapeHtml(courseName)}</h5>
                   <h6 class="card-subtitle text-muted mb-3" style="font-size:1.05rem;">${escapeHtml(institution)}</h6>
+
                   <div class="d-flex flex-wrap">
-                    ${badge(item.start_date)}
-                    ${badge(item.end_date, 'Course :')}
+                  <span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">${escapeHtml(start_date)}</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">s/d</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">${escapeHtml(end_date)}</span>
                     ${badge(item.level)}
                     ${badge(item.pacing_or_type)}
                     ${badge(item.bahasa)}
@@ -284,7 +286,7 @@
                 </div>
 
                 <div class="card-footer bg-transparent border-0 pt-0 pb-3">
-                  <a class="btn btn-light w-100"
+                  <a class="btn btn-primary w-100"
                      href="${escapeAttr(item.course_url || '#')}"
                      target="_blank" rel="noopener">
                      Course Detail
@@ -372,4 +374,3 @@
     </script>
   </body>
 </html>
-
