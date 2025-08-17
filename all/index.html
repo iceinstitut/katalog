@@ -238,8 +238,8 @@
             .slice(0, 6)
             .map(url => `
               <img src="${escapeAttr(url)}"
-                   class="rounded bg-body p-1 shadow-sm border"
-                   style="height:32px"
+                   class="col-auto rounded bg-body p-1 shadow-sm border"
+                   style="height:45px"
                    loading="lazy"
                    alt="partner_logo ${escapeAttr(institution)}">
             `).join(''));
@@ -259,19 +259,21 @@
                        loading="lazy"
                        class="object-fit-cover w-100 h-100 rounded-4 p-2"
                        alt="cover ${escapeAttr(courseName)}">
-                  ${
+                </div>
+
+                <div class="card-body pt-4">
+                <!-- overlay logo -->
+                ${
                     logos
                       ? `
-                        <div class="position-absolute d-flex flex-wrap gap-1"
-                             style="left:.50rem; bottom:0; transform:translateY(90%); z-index:2;">
+                        <div class="row position-relative mb-1"
+                             style="margin-top:-4rem; margin-left:0.1rem; z-index:2;">
                           ${logos}
                         </div>
                       `
                       : ''
                   }
-                </div>
 
-                <div class="card-body pt-4">
                   <h5 class="card-title mb-1">${escapeHtml(courseName)}</h5>
                   <h6 class="card-subtitle text-muted mb-3" style="font-size:1.05rem;">${escapeHtml(institution)}</h6>
 
@@ -374,4 +376,3 @@
     </script>
   </body>
 </html>
-
