@@ -56,8 +56,8 @@
           </select>
         </div>
         <div class="col-6 col-md-2">
-          <select id="filterSkills" class="form-select">
-            <option value="">Semua Skill</option>
+          <select id="filterKemampuan" class="form-select">
+            <option value="">Semua Kemampuan</option>
           </select>
         </div>
         <div class="col-6 col-md-2">
@@ -82,297 +82,367 @@
     <div id="footer"></div>
 
     <script>
-      const apiUrl = "https://script.google.com/macros/s/AKfycbwphVxeXWqOHpIhvAr8wlMqSYvErzNWtjS7kx0DtgZiXeAzNgCmJHMYrGdWs8q2l6neYQ/exec"; // URL GAS kamu
-      let allData = [];
-      let filteredData = [];
-      const itemsPerPage = 12;
-      let currentPage = 1;
+  // == KONFIG ==
+  const apiUrl = "https://script.google.com/macros/s/AKfycbwphVxeXWqOHpIhvAr8wlMqSYvErzNWtjS7kx0DtgZiXeAzNgCmJHMYrGdWs8q2l6neYQ/exec"; // ganti dengan URL deployment Apps Script Anda
+  const itemsPerPage = 12;
 
-      // Elemen
-      const el = {
-        search: document.getElementById("searchInput"),
-        info: document.getElementById("dataInfo"),
-        cards: document.getElementById("cardContainer"),
-        pagination: document.getElementById("pagination"),
-        filtersRow: document.getElementById("filtersRow"),
-        fInstitution: document.getElementById("filterInstitution"),
-        fCategory: document.getElementById("filterCategory"),
-        fPacing: document.getElementById("filterPacing"),
-        fLevel: document.getElementById("filterLevel"),
-        fSkills: document.getElementById("filterSkills"),
-        fBahasa: document.getElementById("filterBahasa"),
-        btnReset: document.getElementById("btnResetFilters")
-      };
+  // == STATE ==
+  let items = [];
+  let total = 0;
+  let currentPage = 1;
+  let currentController = null;      // AbortController untuk batalkan request lama
+  const cache = new Map();           // cache response per querystring
 
-      // Helper: lower-case aman
-      const lc = v => (v ?? "").toString().toLowerCase();
+  // == ELEMENTS (sesuaikan dengan id di HTML Anda) ==
+  const el = {
+    search: document.getElementById("searchInput"),
+    info: document.getElementById("dataInfo"),
+    cards: document.getElementById("cardContainer"),
+    pagination: document.getElementById("pagination"),
+    filtersRow: document.getElementById("filtersRow"),
+    fInstitution: document.getElementById("filterInstitution"),
+    fCategory: document.getElementById("filterCategory"),
+    fPacing: document.getElementById("filterPacing"),
+    fLevel: document.getElementById("filterLevel"),
+    fKemampuan: document.getElementById("filterKemampuan"),
+    fBahasa: document.getElementById("filterBahasa"),
+    btnReset: document.getElementById("btnResetFilters"),
+  };
 
-      // Helper: ambil nilai unik terurut (single value)
-      function uniqueValues(arr, key) {
-        const s = new Set();
-        arr.forEach(it => s.add((it?.[key] ?? "").toString().trim()));
-        const list = Array.from(s).filter(v => v);
-        list.sort((a,b) => a.localeCompare(b, 'id'));
-        return list;
+  // == LOADING UI (overlay hanya area kartu + top progress bar global) ==
+  let loadingOverlay, loadingBar;
+  function ensureLoadingUI() {
+    // Top progress bar (global)
+    if (!loadingBar) {
+      loadingBar = document.createElement('div');
+      loadingBar.style.cssText = `
+        position:fixed; left:0; top:0; height:3px; width:0%;
+        background:linear-gradient(90deg, #0d6efd, #66b2ff);
+        transition:width .3s ease; z-index:10000;`;
+      document.body.appendChild(loadingBar);
+    }
+
+    // Overlay di dalam #cardContainer
+    if (!loadingOverlay) {
+      const host = el.cards; // #cardContainer
+      const cs = window.getComputedStyle(host);
+      if (cs.position === 'static') host.style.position = 'relative';
+
+      loadingOverlay = document.createElement('div');
+      loadingOverlay.style.cssText = `
+        position:absolute; inset:0;
+        display:none; align-items:center; justify-content:center;
+        background:rgba(255,255,255,.7);
+        backdrop-filter:saturate(150%) blur(2px);
+        z-index:10; pointer-events:auto;`;
+      loadingOverlay.innerHTML = `
+        <div style="display:flex; gap:.75rem; align-items:center; font-weight:600;">
+          <div class="spinner-border" role="status" aria-hidden="true"></div>
+          <span>Memuat…</span>
+        </div>`;
+      host.appendChild(loadingOverlay);
+    }
+  }
+
+  function setLoading(active) {
+    ensureLoadingUI();
+    if (active) {
+      loadingOverlay.style.display = 'flex';   // overlay hanya di area kartu
+      loadingBar.style.width = '20%';          // start cepat
+      setTimeout(()=> loadingBar.style.width = '55%', 200);
+      setTimeout(()=> loadingBar.style.width = '80%', 600);
+    } else {
+      loadingOverlay.style.display = 'none';
+      loadingBar.style.width = '100%';
+      setTimeout(()=> loadingBar.style.width = '0%', 250);
+    }
+  }
+
+  // == HELPERS ==
+  const lc = v => (v ?? "").toString().toLowerCase();
+  function escapeHtml(str) {
+    return String(str ?? '')
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'","&#039;");
+  }
+  function escapeAttr(str){ return escapeHtml(str).replaceAll('\n',' '); }
+
+  function fillSelect(selectEl, values, placeholder) {
+    const current = selectEl.value;
+    const opts = ['<option value="">' + placeholder + '</option>']
+      .concat(values.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`));
+    selectEl.innerHTML = opts.join("");
+    if (values.includes(current)) selectEl.value = current;
+  }
+
+  function buildQS() {
+    const params = new URLSearchParams();
+    params.set("mode", "list");
+    params.set("page", currentPage);
+    params.set("limit", itemsPerPage);
+
+    const q = el.search.value.trim();
+    if (q.length >= 2) params.set("q", q);
+
+    if (el.fInstitution.value) params.set("institution", el.fInstitution.value);
+    if (el.fCategory.value)    params.set("category", el.fCategory.value);
+    if (el.fPacing.value)      params.set("pacing_or_type", el.fPacing.value);
+    if (el.fLevel.value)       params.set("level", el.fLevel.value);
+    if (el.fKemampuan.value)   params.set("kemampuan", el.fKemampuan.value);
+    if (el.fBahasa.value)      params.set("bahasa", el.fBahasa.value);
+
+    return params.toString();
+  }
+
+  function renderSkeleton(count = itemsPerPage) {
+    el.cards.innerHTML = Array.from({ length: count }).map(() => `
+      <div class="col-md-6 col-lg-3">
+        <div class="placeholder-card p-3" aria-busy="true" aria-live="polite"></div>
+      </div>`).join("");
+  }
+
+  function renderEmptyState() {
+    el.cards.innerHTML = `
+      <div class="col-12">
+        <div class="text-center text-muted py-5">
+          <div class="mb-2">🙁</div>
+          <h5 class="mb-2">Tidak ada hasil</h5>
+          <p class="mb-3">Coba longgarkan filter atau ubah kata kunci pencarian.</p>
+          <button class="btn btn-outline-secondary" id="btnClearFilters">Bersihkan Filter</button>
+        </div>
+      </div>`;
+    const btn = document.getElementById('btnClearFilters');
+    if (btn) btn.addEventListener('click', () => {
+      el.search.value = "";
+      el.fInstitution.value = "";
+      el.fCategory.value = "";
+      el.fPacing.value = "";
+      el.fLevel.value = "";
+      el.fKemampuan.value = "";
+      el.fBahasa.value = "";
+      loadPage(1);
+    });
+  }
+
+  async function loadMeta() {
+    // meta ringan; gunakan progress bar saja tanpa overlay area kartu
+    ensureLoadingUI();
+    loadingBar.style.width = '25%';
+    try {
+      const cacheKey = "__meta__";
+      let meta;
+      if (cache.has(cacheKey)) {
+        meta = cache.get(cacheKey);
+      } else {
+        const res = await fetch(`${apiUrl}?mode=meta`);
+        meta = await res.json();
+        cache.set(cacheKey, meta);
       }
+      applyMeta(meta);
+    } finally {
+      loadingBar.style.width = '100%';
+      setTimeout(()=> loadingBar.style.width = '0%', 250);
+    }
+  }
 
-      // Helper: ambil nilai unik terurut, split ';'
-      function uniqueValuesSplit(arr, key) {
-        const s = new Set();
-        arr.forEach(it => {
-          const raw = (it?.[key] ?? '').toString();
-          raw.split(';').forEach(part => {
-            const v = part.trim();
-            if (v) s.add(v);
-          });
-        });
-        return Array.from(s).sort((a,b) => a.localeCompare(b, 'id'));
+  function applyMeta(meta) {
+    fillSelect(el.fInstitution, meta.institution || [], "Semua Institusi");
+    fillSelect(el.fCategory,    meta.category || [], "Semua Kategori");
+    fillSelect(el.fPacing,      meta.pacing_or_type || [], "Semua Tipe");
+    fillSelect(el.fLevel,       meta.level || [], "Semua Level");
+    fillSelect(el.fKemampuan,   meta.kemampuan || [], "Semua Kemampuan");
+    fillSelect(el.fBahasa,      meta.bahasa || [], "Semua Bahasa");
+    el.filtersRow.style.display = "";
+  }
+
+  async function loadPage(page = 1) {
+    currentPage = page;
+    const qs = buildQS();
+
+    // 1) gunakan cache jika ada → render instan
+    if (cache.has(qs)) {
+      const data = cache.get(qs);
+      items = data.items || [];
+      total = data.total || 0;
+      if (!items.length) renderEmptyState(); else renderCards();
+      renderPagination();
+      updateDataInfo();
+      // lanjut prefetch tanpa ganggu UI
+      prefetchNext(qs);
+      return;
+    }
+
+    // 2) batalkan request sebelumnya kalau masih jalan
+    if (currentController) currentController.abort();
+    currentController = new AbortController();
+
+    // 3) tampilkan skeleton + overlay lokal + progress bar
+    renderSkeleton();
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${apiUrl}?${qs}`, { signal: currentController.signal });
+      const data = await res.json();
+      cache.set(qs, data);
+
+      items = data.items || [];
+      total = data.total || 0;
+
+      if (!items.length) renderEmptyState(); else renderCards();
+      renderPagination();
+      updateDataInfo();
+      prefetchNext(qs);
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        el.cards.innerHTML = `
+          <div class="col-12"><div class="alert alert-warning">
+            Gagal memuat data. Silakan coba lagi.
+          </div></div>`;
+        console.error(err);
       }
+    } finally {
+      setLoading(false);
+    }
+  }
 
-      async function fetchData() {
-        try {
-          const res = await fetch(apiUrl);
+  // Prefetch halaman berikutnya untuk UX mulus saat klik "Berikutnya"
+  async function prefetchNext(currentQs) {
+    try {
+      const url = new URL(`${apiUrl}?${currentQs}`);
+      const params = url.searchParams;
+      const page = parseInt(params.get('page') || '1', 10);
+      const limit = parseInt(params.get('limit') || String(itemsPerPage), 10);
+      const totalPages = Math.max(1, Math.ceil((total || 0) / limit));
+      if (page < totalPages) {
+        params.set('page', String(page + 1));
+        const nextQs = params.toString();
+        if (!cache.has(nextQs)) {
+          const res = await fetch(`${apiUrl}?${nextQs}`);
           const data = await res.json();
-          allData = Array.isArray(data) ? data : [];
-          populateFilters(allData);
-          applyFiltersAndRender(1);
-        } catch (err) {
-          el.cards.innerHTML = "<p class='text-danger'>Gagal memuat data.</p>";
-          console.error(err);
+          cache.set(nextQs, data);
         }
       }
+    } catch(_){}
+  }
 
-      function populateFilters(data) {
-        // Institution, Category, Level, Skills -> split ';' (multi-value)
-        const institutions = uniqueValuesSplit(data, "institution");
-        const categories   = uniqueValuesSplit(data, "category");
-        const levels       = uniqueValuesSplit(data, "level");
-        const skills       = uniqueValuesSplit(data, "skill");
+  function renderCards() {
+    const DEFAULT_COVER = 'https://iceinstitut.github.io/image/aset/cover-default.jpg';
+    el.cards.innerHTML = items.map(item => {
+      const courseName = (item.course_name ?? '').toString();
+      const institution = (item.institution ?? '').toString();
+      const start_date = (item.start_date ?? '').toString();
+      const end_date = (item.end_date ?? '').toString();
 
-        // Pacing & Bahasa tetap single value (kalau perlu bisa di-split juga)
-        const pacings      = uniqueValues(data, "pacing_or_type");
-        const bahasas      = uniqueValues(data, "bahasa");
+      // Logo partner (maks 6)
+      const logos = ((item.partner_logo ?? '').toString().split(';')
+        .map(s => s.trim()).filter(Boolean).slice(0, 6)
+        .map(url => `
+          <img src="${escapeAttr(url)}"
+               class="col-auto rounded bg-body p-1 shadow-sm border"
+               style="height:45px"
+               loading="lazy"
+               alt="partner_logo ${escapeAttr(institution)}">`).join(''));
 
-        const hasAny = institutions.length || categories.length || pacings.length || levels.length || skills.length || bahasas.length;
-        el.filtersRow.style.display = hasAny ? "" : "none";
-
-        fillSelect(el.fInstitution, institutions, "Semua Institusi");
-        fillSelect(el.fCategory, categories, "Semua Kategori");
-        fillSelect(el.fPacing, pacings, "Semua Tipe");
-        fillSelect(el.fLevel, levels, "Semua Level");
-        fillSelect(el.fSkills, skills, "Semua Skill");
-        fillSelect(el.fBahasa, bahasas, "Semua Bahasa");
-      }
-
-      function fillSelect(selectEl, values, placeholder) {
-        const current = selectEl.value;
-        const opts = ['<option value="">' + placeholder + '</option>']
-          .concat(values.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`));
-        selectEl.innerHTML = opts.join("");
-        if (values.includes(current)) selectEl.value = current;
-      }
-
-      function applyFiltersAndRender(page = 1) {
-        // Kondisi dari UI
-        const kw        = lc(el.search.value);
-        const instSel   = lc(el.fInstitution.value);
-        const catSel    = lc(el.fCategory.value);
-        const paceSel   = lc(el.fPacing.value);
-        const levelSel  = lc(el.fLevel.value);
-        const skillSel  = lc(el.fSkills.value);
-        const bahasaSel = lc(el.fBahasa.value);
-
-        filteredData = allData.filter(item => {
-          // Search global
-          const matchesSearch = !kw || (
-            lc(item.course_name).includes(kw) ||
-            lc(item.institution).includes(kw) ||
-            lc(item.category).includes(kw) ||
-            lc(item.skills).includes(kw)
-          );
-
-          // Institution (multi)
-          const instParts = (item.institution ?? '').toString().split(';').map(s => lc(s.trim())).filter(Boolean);
-          const matchesInst = !instSel || instParts.includes(instSel);
-
-          // Category (multi)
-          const catParts = (item.category ?? '').toString().split(';').map(s => lc(s.trim())).filter(Boolean);
-          const matchesCat = !catSel || catParts.includes(catSel);
-
-          // Level (multi)
-          const levelParts = (item.level ?? '').toString().split(';').map(s => lc(s.trim())).filter(Boolean);
-          const matchesLevel = !levelSel || levelParts.includes(levelSel);
-
-          // Skills (multi)
-          const skillParts = (item.skill ?? '').toString().split(';').map(s => lc(s.trim())).filter(Boolean);
-          const matchesSkill = !skillSel || skillParts.includes(skillSel);
-
-          // Pacing & Bahasa (single / exact)
-          const matchesPace = !paceSel || lc(item.pacing_or_type) === paceSel;
-          const matchesBahasa = !bahasaSel || lc(item.bahasa) === bahasaSel;
-
-          return matchesSearch && matchesInst && matchesCat && matchesLevel && matchesSkill && matchesPace && matchesBahasa;
-        });
-
-        renderPage(page);
-      }
-
-      function renderPage(page) {
-        currentPage = page;
-        const start = (page - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const pageItems = filteredData.slice(start, end);
-
-        const DEFAULT_COVER = 'https://iceinstitut.github.io/image/aset/cover-default.jpg';
-
-        el.cards.innerHTML = pageItems.map(item => {
-          const courseName = (item.course_name ?? '').toString();
-          const institution = (item.institution ?? '').toString();
-          const start_date = (item.start_date ?? '').toString();
-          const end_date = (item.end_date ?? '').toString();
-
-          // Logo partner (maks 6)
-          const logos = ((item.partner_logo ?? '').toString().split(';')
-            .map(s => s.trim())
-            .filter(Boolean)
-            .slice(0, 6)
-            .map(url => `
-              <img src="${escapeAttr(url)}"
-                   class="col-auto rounded bg-body p-1 shadow-sm border"
-                   style="height:45px"
-                   loading="lazy"
-                   alt="partner_logo ${escapeAttr(institution)}">
-            `).join(''));
-
-          // Badge helper
-          const badge = (val, prefix = '') => {
-            const v = (val ?? '').toString().trim();
-            return v ? `<span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">${escapeHtml(prefix ? `${prefix} ${v}` : v)}</span>` : '';
-          };
-
-          return `
-            <div class="col-md-6 col-lg-3">
-              <div class="card h-100 shadow-sm border rounded-4">
-                <!-- Cover + overlay logo -->
-                <div class="ratio ratio-16x9 position-relative">
-                  <img src="${escapeAttr(item.card_image || DEFAULT_COVER)}"
-                       loading="lazy"
-                       class="object-fit-cover w-100 h-100 rounded-4 p-2"
-                       alt="cover ${escapeAttr(courseName)}">
-                </div>
-
-                <div class="card-body pt-4">
-                <!-- overlay logo -->
-                ${
-                    logos
-                      ? `
-                        <div class="row position-relative mb-1"
-                             style="margin-top:-4rem; margin-left:0.1rem; z-index:2;">
-                          ${logos}
-                        </div>
-                      `
-                      : ''
-                  }
-
-                  <h5 class="card-title mb-1">${escapeHtml(courseName)}</h5>
-                  <h6 class="card-subtitle text-muted mb-3" style="font-size:1.05rem;">${escapeHtml(institution)}</h6>
-
-                  <div class="d-flex flex-wrap">
-                  <span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">${escapeHtml(start_date)}</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">s/d</span><span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">${escapeHtml(end_date)}</span>
-                    ${badge(item.level)}
-                    ${badge(item.pacing_or_type)}
-                    ${badge(item.bahasa)}
-                    ${badge(item.tipe)}
-                    ${badge(item.platform)}
-                  </div>
-                </div>
-
-                <div class="card-footer bg-transparent border-0 pt-0 pb-3">
-                  <a class="btn btn-primary w-100"
-                     href="${escapeAttr(item.course_url || '#')}"
-                     target="_blank" rel="noopener">
-                     Course Detail
-                  </a>
-                </div>
-              </div>
-            </div>
-          `;
-        }).join('');
-
-        renderPagination();
-        updateDataInfo(start, end, filteredData.length, allData.length);
-      }
-
-      function renderPagination() {
-        const totalPages = Math.max(1, Math.ceil(filteredData.length / itemsPerPage));
-        const prevDisabled = currentPage === 1 ? "disabled" : "";
-        const nextDisabled = currentPage >= totalPages ? "disabled" : "";
-        el.pagination.innerHTML = `
-          <li class="page-item ${prevDisabled}">
-            <a class="page-link" href="#" onclick="return goPage(${currentPage - 1})">Sebelumnya</a>
-          </li>
-          <li class="page-item disabled">
-            <a class="page-link" href="#">${currentPage} / ${totalPages}</a>
-          </li>
-          <li class="page-item ${nextDisabled}">
-            <a class="page-link" href="#" onclick="return goPage(${currentPage + 1})">Berikutnya</a>
-          </li>
-        `;
-      }
-
-      // pagination handler
-      window.goPage = function(n) {
-        if (n < 1) return false;
-        const totalPages = Math.max(1, Math.ceil(filteredData.length / itemsPerPage));
-        if (n > totalPages) return false;
-        renderPage(n);
-        return false;
+      const badge = (val, prefix = '') => {
+        const v = (val ?? '').toString().trim();
+        return v ? `<span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">${escapeHtml(prefix ? `${prefix} ${v}` : v)}</span>` : '';
       };
 
-      function updateDataInfo(start, end, totalFiltered, totalAll) {
-        const shownEnd = Math.min(end, totalFiltered);
-        el.info.textContent = `Menampilkan ${totalFiltered ? (start + 1) : 0} - ${shownEnd} dari ${totalFiltered} data • Total ${totalAll}`;
-      }
+      return `
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm border rounded-4">
+            <div class="ratio ratio-16x9 position-relative">
+              <img src="${escapeAttr(item.card_image || DEFAULT_COVER)}"
+                   loading="lazy"
+                   class="object-fit-cover w-100 h-100 rounded-4 p-2"
+                   alt="cover ${escapeAttr(courseName)}">
+            </div>
 
-      // escape
-      function escapeHtml(str) {
-        return String(str ?? '')
-          .replaceAll('&','&amp;')
-          .replaceAll('<','&lt;')
-          .replaceAll('>','&gt;')
-          .replaceAll('"','&quot;')
-          .replaceAll("'","&#039;");
-      }
-      function escapeAttr(str){ return escapeHtml(str).replaceAll('\n',' '); }
+            <div class="card-body pt-4">
+              ${logos ? `
+                <div class="row position-relative mb-1" style="margin-top:-4rem; margin-left:0.1rem; z-index:2;">
+                  ${logos}
+                </div>` : ''}
 
-      // Listeners
-      el.search.addEventListener("input", () => applyFiltersAndRender(1));
-      el.fInstitution.addEventListener("change", () => applyFiltersAndRender(1));
-      el.fCategory.addEventListener("change", () => applyFiltersAndRender(1));
-      el.fPacing.addEventListener("change", () => applyFiltersAndRender(1));
-      el.fLevel.addEventListener("change", () => applyFiltersAndRender(1));
-      el.fSkills.addEventListener("change", () => applyFiltersAndRender(1));
-      el.fBahasa.addEventListener("change", () => applyFiltersAndRender(1));
-      el.btnReset.addEventListener("click", () => {
-        el.search.value = "";
-        el.fInstitution.value = "";
-        el.fCategory.value = "";
-        el.fPacing.value = "";
-        el.fLevel.value = "";
-        el.fSkills.value = "";
-        el.fBahasa.value = "";
-        applyFiltersAndRender(1);
-      });
+              <h5 class="card-title mb-1">${escapeHtml(courseName)}</h5>
+              <h6 class="card-subtitle text-muted mb-3" style="font-size:1.05rem;">${escapeHtml(institution)}</h6>
 
-      // Placeholder skeleton sebelum fetch
-      document.addEventListener("DOMContentLoaded", () => {
-        el.cards.innerHTML = Array.from({ length: 12 }).map(() => `
-          <div class="col-md-6 col-lg-3">
-            <div class="placeholder-card p-3"></div>
+              <div class="d-flex flex-wrap">
+                <span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">${escapeHtml(start_date)}</span>
+                <span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">s/d</span>
+                <span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">${escapeHtml(end_date)}</span>
+                ${badge(item.level)}${badge(item.pacing_or_type)}${badge(item.bahasa)}${badge(item.tipe)}${badge(item.platform)}
+              </div>
+            </div>
+
+            <div class="card-footer bg-transparent border-0 pt-0 pb-3">
+              <a class="btn btn-primary w-100"
+                 href="${escapeAttr(item.course_url || '#')}"
+                 target="_blank" rel="noopener">Course Detail</a>
+            </div>
           </div>
-        `).join("");
-        fetchData();
-      });
-    </script>
+        </div>`;
+    }).join('');
+  }
+
+  function renderPagination() {
+    const totalPages = Math.max(1, Math.ceil(total / itemsPerPage));
+    const prevDisabled = currentPage === 1 ? "disabled" : "";
+    const nextDisabled = currentPage >= totalPages ? "disabled" : "";
+    el.pagination.innerHTML = `
+      <li class="page-item ${prevDisabled}">
+        <a class="page-link" href="#" onclick="return goPage(${currentPage - 1})">Sebelumnya</a>
+      </li>
+      <li class="page-item disabled">
+        <a class="page-link" href="#">${currentPage} / ${totalPages}</a>
+      </li>
+      <li class="page-item ${nextDisabled}">
+        <a class="page-link" href="#" onclick="return goPage(${currentPage + 1})">Berikutnya</a>
+      </li>`;
+  }
+  window.goPage = function(n){
+    if (n < 1) return false;
+    const totalPages = Math.max(1, Math.ceil(total / itemsPerPage));
+    if (n > totalPages) return false;
+    loadPage(n);
+    return false;
+  };
+
+  function updateDataInfo() {
+    const start = total ? ((currentPage - 1) * itemsPerPage + 1) : 0;
+    const end = Math.min(currentPage * itemsPerPage, total);
+    el.info.textContent = `Menampilkan ${start} - ${end} dari ${total} data`;
+  }
+
+  // == LISTENERS ==
+  let t = null;
+  el.search.addEventListener("input", () => {
+    clearTimeout(t);
+    t = setTimeout(() => loadPage(1), 350); // debounce kecil
+  });
+  [el.fInstitution, el.fCategory, el.fPacing, el.fLevel, el.fKemampuan, el.fBahasa]
+    .forEach(sel => sel.addEventListener("change", () => loadPage(1)));
+
+  el.btnReset.addEventListener("click", () => {
+    el.search.value = "";
+    el.fInstitution.value = "";
+    el.fCategory.value = "";
+    el.fPacing.value = "";
+    el.fLevel.value = "";
+    el.fKemampuan.value = "";
+    el.fBahasa.value = "";
+    loadPage(1);
+  });
+
+  // == BOOT ==
+  document.addEventListener("DOMContentLoaded", async () => {
+    renderSkeleton();
+    await loadMeta();
+    await loadPage(1);
+  });
+</script>
   </body>
 </html>
