@@ -11,58 +11,103 @@
         background-color: #f8f9fa;
         animation: pulse 1.5s infinite;
       }
+
       @keyframes pulse {
-        0% { background-color: #f8f9fa; }
-        50% { background-color: #e9ecef; }
-        100% { background-color: #f8f9fa; }
+        0% {
+          background-color: #f8f9fa;
+        }
+
+        50% {
+          background-color: #e9ecef;
+        }
+
+        100% {
+          background-color: #f8f9fa;
+        }
+      }
+
+      .hero {
+        background-color: #F6F6F6;
+        white-space: pre-line;
+      }
+
+      .hero__content {
+        align-items: center;
+        display: flex;
+        font-family: Inter;
+        justify-content: space-between;
+        max-height: 350px;
+        min-height: 310px;
+      }
+
+      .container-mw-xl {
+        max-width: 1472px !important;
+      }
+
+      .hero__content .highlighted {
+        color: #EE1522;
+      }
+
+      .hero__content .hero__image,
+      .hero__content div {
+        height: 100%;
+        max-height: 350px;
+        min-height: 310px;
       }
     </style>
   </head>
   <body>
     <div id="header"></div>
+    <section class="hero px-1">
+      <div class="hero__content container-mw-xl container-fluid">
+        <h1 class="display-1">
+          <span class="highlighted">Explore world-class learning</span>
+          <p class="h3 font-weight-normal"> Unmatched quality. Market relevance. Comprehensive solutions.</p>
+        </h1>
+        <div>
+          <img srcset="https://explore-catalog.edx.org/268786007dcaf1c752de4d68513fd103.png 1000w, https://explore-catalog.edx.org/268786007dcaf1c752de4d68513fd103.png 2000w" src="https://explore-catalog.edx.org/268786007dcaf1c752de4d68513fd103.png" alt="People learning and performing highly skilled tasks" sizes="33vw" class="hero__image">
+        </div>
+      </div>
+    </section>
 
     <main class="container py-3">
-      <div class="col-10 px-4 py-5 my-5 text-center mx-auto">
-        <h1 class="display-5 fw-bold text-body-emphasis">Katalog ICE Institute</h1>
-      </div>
-
       
       <h1 class="fw-bold text-body-emphasis">Search our catalog</h1>
       <div class="input-group mb-3">
-		  <span class="input-group-text" id="basic-addon1"><i class="bi bi-search" style="font-size: 2rem;"></i></span>
-		  <input type="text" id="searchInput" class="form-control form-control-lg" style="font-size: 2rem;">
-		</div>
+      <span class="input-group-text" id="basic-addon1"><i class="bi bi-search" style="font-size: 2rem;"></i></span>
+      <input type="text" id="searchInput" class="form-control form-control-lg" style="font-size: 2rem;">
+    </div>
 
       <!-- FILTERS ROW -->
       <div class="row g-2 align-items-center mb-3" id="filtersRow" style="display:none;">
         <div class="col-6 col-md-2">
           <select id="filterInstitution" class="form-select">
-            <option value="">Semua Institusi</option>
+            <option value="">All Institution</option>
           </select>
         </div>
         <div class="col-6 col-md-2">
           <select id="filterCategory" class="form-select">
-            <option value="">Semua Kategori</option>
+            <option value="">All Category</option>
           </select>
         </div>
         <div class="col-6 col-md-2">
           <select id="filterPacing" class="form-select">
-            <option value="">Semua Tipe</option>
+            <option value="">All Pacing</option>
           </select>
         </div>
         <div class="col-6 col-md-2">
           <select id="filterLevel" class="form-select">
-            <option value="">Semua Level</option>
+            <option value="">All Level</option>
           </select>
         </div>
         <div class="col-6 col-md-2">
           <select id="filterKemampuan" class="form-select">
-            <option value="">Semua Kemampuan</option>
+            <option value="">All Skill</option>
           </select>
         </div>
         <div class="col-6 col-md-2">
           <select id="filterBahasa" class="form-select">
-            <option value="">Semua Bahasa</option>
+            <option value="">Language</option>
           </select>
         </div>
         <div class="col-12 col-md-2 d-grid">
@@ -249,12 +294,12 @@
   }
 
   function applyMeta(meta) {
-    fillSelect(el.fInstitution, meta.institution || [], "Semua Institusi");
-    fillSelect(el.fCategory,    meta.category || [], "Semua Kategori");
-    fillSelect(el.fPacing,      meta.pacing_or_type || [], "Semua Tipe");
-    fillSelect(el.fLevel,       meta.level || [], "Semua Level");
-    fillSelect(el.fKemampuan,   meta.kemampuan || [], "Semua Kemampuan");
-    fillSelect(el.fBahasa,      meta.bahasa || [], "Semua Bahasa");
+    fillSelect(el.fInstitution, meta.institution || [], "All Institution");
+    fillSelect(el.fCategory,    meta.category || [], "All Category");
+    fillSelect(el.fPacing,      meta.pacing_or_type || [], "All Pacing");
+    fillSelect(el.fLevel,       meta.level || [], "All Level");
+    fillSelect(el.fKemampuan,   meta.kemampuan || [], "All Skill");
+    fillSelect(el.fBahasa,      meta.bahasa || [], "All Language");
     el.filtersRow.style.display = "";
   }
 
