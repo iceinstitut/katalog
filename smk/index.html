@@ -4,59 +4,10 @@
     <script src="../load-components.js"></script>
     <script src="../load-head.js"></script>
     <style>
-      body {
-        font-family: Inter !important;
-      }
-
-      .card-img-container {
-        /*width: 100%;*/
-        /*height: 200px;*/
-        overflow: hidden;
-      }
-
-      .body-content {
-        display: none;
-        /* padding: 20px; */
-        /* margin-top: 20px; */
-        /*border: 1px solid #dee2e6; */
-        /* border-radius: 5px; */
-      }
-
-      /*.body-content.active {
-            display: block;
-        }*/
-      .body-content.active {
-        display: block;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-        max-height: 100vh;
-        overflow-y: auto;
-      }
-
-      .card {
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      }
-
-      .card:hover {
-        transform: translateY(-15px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      }
-
-      .card.active {
-        border: 2px solid #ee1522;
-        box-shadow: 0 5px 15px rgba(238, 21, 34, 0.3);
-        transform: translateY(-2px);
-      }
-
-      .card.active .card-title {
-        color: #ee1522;
-      }
+    .card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border: 4px solid #ee1522;
+        }
     </style>
   </head>
   <body>
@@ -79,80 +30,27 @@
       <h1>Tingkatkan Kompetensi dengan 10 Program Unggulan ICE Institute</h1>
       <p>ICE Institute, sebagai platform pendidikan daring terkemuka di Indonesia, menghadirkan kesempatan emas bagi guru SMK untuk meningkatkan kredensial dan keahlian praktis tanpa terikat waktu dan tempat. Dengan kolaborasi bersama universitas ternama dan lembaga industri, ICE Institute menyediakan 10 program kredensial mikro yang dirancang khusus untuk guru-guru SMK, antara lain:</p>
       <div>
-        <!-- Row untuk Card -->
-        <div class="row row-cols-4 g-4 mb-5 text-center">
-
-<div class="col"><div class="card h-100" id="card1" onclick="showBody(1)"><div class="d-flex align-items-center justify-content-center p-3" style="width: 100%;"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-agribisnis%20dan%20agriteknologi.png" class="img-fluid mh-100" /></div><div class="card-footer bg-white border-0"><h5 class="card-title">Agribisnis dan Agriteknologi</h5></div></div></div>
-<div class="col"><div class="card h-100" id="card1" onclick="showBody(2)"><div class="d-flex align-items-center justify-content-center p-3" style="width: 100%;"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-bisnis%20dan%20manajemen-i.png" class="img-fluid mh-100" /></div><div class="card-footer bg-white border-0"><h5 class="card-title">Bisnis dan Manajemen I</h5></div></div></div>
-<div class="col"><div class="card h-100" id="card1" onclick="showBody(3)"><div class="d-flex align-items-center justify-content-center p-3" style="width: 100%;"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-bisnis%20dan%20manajemen-ii.png" class="img-fluid mh-100" /></div><div class="card-footer bg-white border-0"><h5 class="card-title">Bisnis dan Manajemen II</h5></div></div></div>
-<div class="col"><div class="card h-100" id="card1" onclick="showBody(4)"><div class="d-flex align-items-center justify-content-center p-3" style="width: 100%;"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-bisnis%20dan%20manajemen-iii.png" class="img-fluid mh-100" /></div><div class="card-footer bg-white border-0"><h5 class="card-title">Bisnis dan Manajemen III</h5></div></div></div>
-<div class="col"><div class="card h-100" id="card1" onclick="showBody(5)"><div class="d-flex align-items-center justify-content-center p-3" style="width: 100%;"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-energi%20dan%20pertambangan.png" class="img-fluid mh-100" /></div><div class="card-footer bg-white border-0"><h5 class="card-title">Energi dan Pertambangan</h5></div></div></div>
-<div class="col"><div class="card h-100" id="card1" onclick="showBody(6)"><div class="d-flex align-items-center justify-content-center p-3" style="width: 100%;"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-kemaritiman.png" class="img-fluid mh-100" /></div><div class="card-footer bg-white border-0"><h5 class="card-title">Kemaritiman</h5></div></div></div>
-<div class="col"><div class="card h-100" id="card1" onclick="showBody(7)"><div class="d-flex align-items-center justify-content-center p-3" style="width: 100%;"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-kesehatan%20dan%20pekerjaan%20sosial.png" class="img-fluid mh-100" /></div><div class="card-footer bg-white border-0"><h5 class="card-title">Kesehatan dan Pekerjaan Sosial</h5></div></div></div>
-<div class="col"><div class="card h-100" id="card1" onclick="showBody(8)"><div class="d-flex align-items-center justify-content-center p-3" style="width: 100%;"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-pariwisata.png" class="img-fluid mh-100" /></div><div class="card-footer bg-white border-0"><h5 class="card-title">Pariwisata</h5></div></div></div>
-<div class="col"><div class="card h-100" id="card1" onclick="showBody(9)"><div class="d-flex align-items-center justify-content-center p-3" style="width: 100%;"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-seni%20dan%20ekonomi%20kreatif.png" class="img-fluid mh-100" /></div><div class="card-footer bg-white border-0"><h5 class="card-title">Seni dan Ekonomi Kreatif</h5></div></div></div>
-<div class="col"><div class="card h-100" id="card1" onclick="showBody(10)"><div class="d-flex align-items-center justify-content-center p-3" style="width: 100%;"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20informasi%20dan%20komunikasi-i.png" class="img-fluid mh-100" /></div><div class="card-footer bg-white border-0"><h5 class="card-title">Teknologi Informasi dan Komunikasi I</h5></div></div></div>
-<div class="col"><div class="card h-100" id="card1" onclick="showBody(11)"><div class="d-flex align-items-center justify-content-center p-3" style="width: 100%;"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20informasi%20dan%20komunikasi-ii.png" class="img-fluid mh-100" /></div><div class="card-footer bg-white border-0"><h5 class="card-title">Teknologi Informasi dan Komunikasi II</h5></div></div></div>
-<div class="col"><div class="card h-100" id="card1" onclick="showBody(12)"><div class="d-flex align-items-center justify-content-center p-3" style="width: 100%;"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20konstruksi%20dan%20bangunan.png" class="img-fluid mh-100" /></div><div class="card-footer bg-white border-0"><h5 class="card-title">Teknologi Konstruksi dan Bangunan</h5></div></div></div>
-<div class="col"><div class="card h-100" id="card1" onclick="showBody(13)"><div class="d-flex align-items-center justify-content-center p-3" style="width: 100%;"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20manufaktur%20dan%20rekayasa-i.png" class="img-fluid mh-100" /></div><div class="card-footer bg-white border-0"><h5 class="card-title">Teknologi Manufaktur dan Rekayasa I</h5></div></div></div>
-<div class="col"><div class="card h-100" id="card1" onclick="showBody(14)"><div class="d-flex align-items-center justify-content-center p-3" style="width: 100%;"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20manufaktur%20dan%20rekayasa-ii.png" class="img-fluid mh-100" /></div><div class="card-footer bg-white border-0"><h5 class="card-title">Teknologi Manufaktur dan Rekayasa II</h5></div></div></div>
-
-        </div>
+        <!-- Awal Row untuk Card -->
+        <div class="col"><div class="card h-100" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#data1"><div class="card-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-agribisnis%20dan%20agriteknologi.png" class="img-fluid mh-100"><h4 class="card-title text-center">Agribisnis dan Agriteknologi</h4></div></div><div class="modal fade" id="data1" tabindex="-1" aria-labelledby="data1Label" aria-hidden="true"><div class="modal-dialog" style="width:75vw;max-width:none;height:100%;margin:auto;align-content:center"><div class="modal-content"><div class="modal-header"><h1 class="modal-title fs-5" id="data1Label">Agribisnis dan Agriteknologi</h1><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-agribisnis%20dan%20agriteknologi.png" width="100%"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div></div>
+        <div class="col"><div class="card h-100" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#data2"><div class="card-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-bisnis%20dan%20manajemen-i.png" class="img-fluid mh-100"><h4 class="card-title text-center">Bisnis dan Manajemen I</h4></div></div><div class="modal fade" id="data2" tabindex="-1" aria-labelledby="data2Label" aria-hidden="true"><div class="modal-dialog" style="width:75vw;max-width:none;height:100%;margin:auto;align-content:center"><div class="modal-content"><div class="modal-header"><h1 class="modal-title fs-5" id="data2Label">Bisnis dan Manajemen I</h1><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-bisnis%20dan%20manajemen-i.png" width="100%"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div></div>
+        <div class="col"><div class="card h-100" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#data3"><div class="card-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-bisnis%20dan%20manajemen-ii.png" class="img-fluid mh-100"><h4 class="card-title text-center">Bisnis dan Manajemen II</h4></div></div><div class="modal fade" id="data3" tabindex="-1" aria-labelledby="data3Label" aria-hidden="true"><div class="modal-dialog" style="width:75vw;max-width:none;height:100%;margin:auto;align-content:center"><div class="modal-content"><div class="modal-header"><h1 class="modal-title fs-5" id="data3Label">Bisnis dan Manajemen II</h1><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-bisnis%20dan%20manajemen-ii.png" width="100%"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div></div>
+        <div class="col"><div class="card h-100" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#data4"><div class="card-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-bisnis%20dan%20manajemen-iii.png" class="img-fluid mh-100"><h4 class="card-title text-center">Bisnis dan Manajemen III</h4></div></div><div class="modal fade" id="data4" tabindex="-1" aria-labelledby="data4Label" aria-hidden="true"><div class="modal-dialog" style="width:75vw;max-width:none;height:100%;margin:auto;align-content:center"><div class="modal-content"><div class="modal-header"><h1 class="modal-title fs-5" id="data4Label">Bisnis dan Manajemen III</h1><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-bisnis%20dan%20manajemen-iii.png" width="100%"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div></div>
+        <div class="col"><div class="card h-100" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#data5"><div class="card-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-energi%20dan%20pertambangan.png" class="img-fluid mh-100"><h4 class="card-title text-center">Energi dan Pertambangan</h4></div></div><div class="modal fade" id="data5" tabindex="-1" aria-labelledby="data5Label" aria-hidden="true"><div class="modal-dialog" style="width:75vw;max-width:none;height:100%;margin:auto;align-content:center"><div class="modal-content"><div class="modal-header"><h1 class="modal-title fs-5" id="data5Label">Energi dan Pertambangan</h1><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-energi%20dan%20pertambangan.png" width="100%"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div></div>
+        <div class="col"><div class="card h-100" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#data6"><div class="card-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-kemaritiman.png" class="img-fluid mh-100"><h4 class="card-title text-center">Kemaritiman</h4></div></div><div class="modal fade" id="data6" tabindex="-1" aria-labelledby="data6Label" aria-hidden="true"><div class="modal-dialog" style="width:75vw;max-width:none;height:100%;margin:auto;align-content:center"><div class="modal-content"><div class="modal-header"><h1 class="modal-title fs-5" id="data6Label">Kemaritiman</h1><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-kemaritiman.png" width="100%"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div></div>
+        <div class="col"><div class="card h-100" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#data7"><div class="card-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-kesehatan%20dan%20pekerjaan%20sosial.png" class="img-fluid mh-100"><h4 class="card-title text-center">Kesehatan dan Pekerjaan Sosial</h4></div></div><div class="modal fade" id="data7" tabindex="-1" aria-labelledby="data7Label" aria-hidden="true"><div class="modal-dialog" style="width:75vw;max-width:none;height:100%;margin:auto;align-content:center"><div class="modal-content"><div class="modal-header"><h1 class="modal-title fs-5" id="data7Label">Kesehatan dan Pekerjaan Sosial</h1><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-kesehatan%20dan%20pekerjaan%20sosial.png" width="100%"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div></div>
+        <div class="col"><div class="card h-100" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#data8"><div class="card-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-pariwisata.png" class="img-fluid mh-100"><h4 class="card-title text-center">Pariwisata</h4></div></div><div class="modal fade" id="data8" tabindex="-1" aria-labelledby="data8Label" aria-hidden="true"><div class="modal-dialog" style="width:75vw;max-width:none;height:100%;margin:auto;align-content:center"><div class="modal-content"><div class="modal-header"><h1 class="modal-title fs-5" id="data8Label">Pariwisata</h1><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-pariwisata.png" width="100%"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div></div>
+        <div class="col"><div class="card h-100" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#data9"><div class="card-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-seni%20dan%20ekonomi%20kreatif.png" class="img-fluid mh-100"><h4 class="card-title text-center">Seni dan Ekonomi Kreatif</h4></div></div><div class="modal fade" id="data9" tabindex="-1" aria-labelledby="data9Label" aria-hidden="true"><div class="modal-dialog" style="width:75vw;max-width:none;height:100%;margin:auto;align-content:center"><div class="modal-content"><div class="modal-header"><h1 class="modal-title fs-5" id="data9Label">Seni dan Ekonomi Kreatif</h1><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-seni%20dan%20ekonomi%20kreatif.png" width="100%"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div></div>
+        <div class="col"><div class="card h-100" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#data10"><div class="card-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20informasi%20dan%20komunikasi-i.png" class="img-fluid mh-100"><h4 class="card-title text-center">Teknologi Informasi dan Komunikasi</h4></div></div><div class="modal fade" id="data10" tabindex="-1" aria-labelledby="data10Label" aria-hidden="true"><div class="modal-dialog" style="width:75vw;max-width:none;height:100%;margin:auto;align-content:center"><div class="modal-content"><div class="modal-header"><h1 class="modal-title fs-5" id="data10Label">Teknologi Informasi dan Komunikasi</h1><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20informasi%20dan%20komunikasi-i.png" width="100%"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div></div>
+        <div class="col"><div class="card h-100" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#data11"><div class="card-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20informasi%20dan%20komunikasi-ii.png" class="img-fluid mh-100"><h4 class="card-title text-center">Teknologi Informasi dan Komunikasi II</h4></div></div><div class="modal fade" id="data11" tabindex="-1" aria-labelledby="data11Label" aria-hidden="true"><div class="modal-dialog" style="width:75vw;max-width:none;height:100%;margin:auto;align-content:center"><div class="modal-content"><div class="modal-header"><h1 class="modal-title fs-5" id="data11Label">Teknologi Informasi dan Komunikasi II</h1><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20informasi%20dan%20komunikasi-ii.png" width="100%"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div></div>
+        <div class="col"><div class="card h-100" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#data12"><div class="card-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20konstruksi%20dan%20bangunan.png" class="img-fluid mh-100"><h4 class="card-title text-center">Teknologi Konstruksi dan Bangunan</h4></div></div><div class="modal fade" id="data12" tabindex="-1" aria-labelledby="data12Label" aria-hidden="true"><div class="modal-dialog" style="width:75vw;max-width:none;height:100%;margin:auto;align-content:center"><div class="modal-content"><div class="modal-header"><h1 class="modal-title fs-5" id="data12Label">Teknologi Konstruksi dan Bangunan</h1><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20konstruksi%20dan%20bangunan.png" width="100%"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div></div>
+        <div class="col"><div class="card h-100" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#data13"><div class="card-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20manufaktur%20dan%20rekayasa-i.png" class="img-fluid mh-100"><h4 class="card-title text-center">Teknologi Manufaktur dan Rekayasa</h4></div></div><div class="modal fade" id="data13" tabindex="-1" aria-labelledby="data13Label" aria-hidden="true"><div class="modal-dialog" style="width:75vw;max-width:none;height:100%;margin:auto;align-content:center"><div class="modal-content"><div class="modal-header"><h1 class="modal-title fs-5" id="data13Label">Teknologi Manufaktur dan Rekayasa</h1><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20manufaktur%20dan%20rekayasa-i.png" width="100%"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div></div>
+        <div class="col"><div class="card h-100" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#data14"><div class="card-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20manufaktur%20dan%20rekayasa-ii.png" class="img-fluid mh-100"><h4 class="card-title text-center">Teknologi Manufaktur dan Rekayasa II</h4></div></div><div class="modal fade" id="data14" tabindex="-1" aria-labelledby="data14Label" aria-hidden="true"><div class="modal-dialog" style="width:75vw;max-width:none;height:100%;margin:auto;align-content:center"><div class="modal-content"><div class="modal-header"><h1 class="modal-title fs-5" id="data14Label">Teknologi Manufaktur dan Rekayasa II</h1><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20manufaktur%20dan%20rekayasa-ii.png" width="100%"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div></div></div></div></div>
         <!-- Akhir Row untuk Card -->
-        <!-- Awal Row untuk Konten -->
-        <div>
-
-<div id="body1" class="body-content"><div class="d-grid gap-2"><button class="close-btn btn btn-primary" onclick="closeBody()">Tutup</button></div><div><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-agribisnis%20dan%20agriteknologi.png" class="img-fluid mh-100" /></div></div>
-<div id="body2" class="body-content"><div class="d-grid gap-2"><button class="close-btn btn btn-primary" onclick="closeBody()">Tutup</button></div><div><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-bisnis%20dan%20manajemen-i.png" class="img-fluid mh-100" /></div></div>
-<div id="body3" class="body-content"><div class="d-grid gap-2"><button class="close-btn btn btn-primary" onclick="closeBody()">Tutup</button></div><div><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-bisnis%20dan%20manajemen-ii.png" class="img-fluid mh-100" /></div></div>
-<div id="body4" class="body-content"><div class="d-grid gap-2"><button class="close-btn btn btn-primary" onclick="closeBody()">Tutup</button></div><div><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-bisnis%20dan%20manajemen-iii.png" class="img-fluid mh-100" /></div></div>
-<div id="body5" class="body-content"><div class="d-grid gap-2"><button class="close-btn btn btn-primary" onclick="closeBody()">Tutup</button></div><div><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-energi%20dan%20pertambangan.png" class="img-fluid mh-100" /></div></div>
-<div id="body6" class="body-content"><div class="d-grid gap-2"><button class="close-btn btn btn-primary" onclick="closeBody()">Tutup</button></div><div><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-kemaritiman.png" class="img-fluid mh-100" /></div></div>
-<div id="body7" class="body-content"><div class="d-grid gap-2"><button class="close-btn btn btn-primary" onclick="closeBody()">Tutup</button></div><div><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-kesehatan%20dan%20pekerjaan%20sosial.png" class="img-fluid mh-100" /></div></div>
-<div id="body8" class="body-content"><div class="d-grid gap-2"><button class="close-btn btn btn-primary" onclick="closeBody()">Tutup</button></div><div><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-pariwisata.png" class="img-fluid mh-100" /></div></div>
-<div id="body9" class="body-content"><div class="d-grid gap-2"><button class="close-btn btn btn-primary" onclick="closeBody()">Tutup</button></div><div><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-seni%20dan%20ekonomi%20kreatif.png" class="img-fluid mh-100" /></div></div>
-<div id="body10" class="body-content"><div class="d-grid gap-2"><button class="close-btn btn btn-primary" onclick="closeBody()">Tutup</button></div><div><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20informasi%20dan%20komunikasi-i.png" class="img-fluid mh-100" /></div></div>
-<div id="body11" class="body-content"><div class="d-grid gap-2"><button class="close-btn btn btn-primary" onclick="closeBody()">Tutup</button></div><div><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20informasi%20dan%20komunikasi-ii.png" class="img-fluid mh-100" /></div></div>
-<div id="body12" class="body-content"><div class="d-grid gap-2"><button class="close-btn btn btn-primary" onclick="closeBody()">Tutup</button></div><div><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20konstruksi%20dan%20bangunan.png" class="img-fluid mh-100" /></div></div>
-<div id="body13" class="body-content"><div class="d-grid gap-2"><button class="close-btn btn btn-primary" onclick="closeBody()">Tutup</button></div><div><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20manufaktur%20dan%20rekayasa-i.png" class="img-fluid mh-100" /></div></div>
-<div id="body14" class="body-content"><div class="d-grid gap-2"><button class="close-btn btn btn-primary" onclick="closeBody()">Tutup</button></div><div><img loading="lazy" src="https://iceinstitut.github.io/image/aset/kmg-teknologi%20manufaktur%20dan%20rekayasa-ii.png" class="img-fluid mh-100" /></div></div>
-
-        </div>
-        <!-- Awal Row untuk Konten -->
 
         <h1>Bergabunglah Sekarang dan Jadilah Guru SMK Masa Depan!</h1>
         <p>Jangan tunda lagi. Jadikan diri Anda bagian dari gerakan revolusi pendidikan SMK. Dengan mengikuti program Kredensial Mikro Guru (KMG) SMK melalui ICE Institute, Anda akan menjadi agen perubahan yang siap mencetak generasi muda Indonesia yang andal, inovatif, dan siap menghadapi tantangan dunia kerja.</p>
       </div>
     </main>
     <div id="footer"></div>
-    <script>
-      // Fungsi untuk menampilkan atau menyembunyikan body yang sesuai
-      function showBody(bodyNumber) {
-        const selectedBody = document.getElementById("body" + bodyNumber);
-        const selectedCard = document.getElementById("card" + bodyNumber);
-        const isBodyActive = selectedBody.classList.contains("active");
-        // Sembunyikan semua body content dan card
-        document.querySelectorAll(".body-content").forEach((body) => {
-          body.classList.remove("active");
-        });
-        document.querySelectorAll(".card").forEach((card) => {
-          card.classList.remove("active");
-        });
-        // Jika yang diklik belum aktif, tambahkan kelas active untuk menampilkannya
-        if (!isBodyActive) {
-          selectedBody.classList.add("active");
-          selectedCard.classList.add("active");
-        }
-      }
-      // Fungsi baru untuk menutup semua body content
-      function closeBody() {
-        document.querySelectorAll(".body-content").forEach((body) => {
-          body.classList.remove("active");
-        });
-        document.querySelectorAll(".card").forEach((card) => {
-          card.classList.remove("active");
-        });
-      }
-    </script>
   </body>
 </html>
