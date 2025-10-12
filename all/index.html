@@ -1,5 +1,8 @@
 <html>
   <head>
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"> -->
     <title>Katalog All Courses ICE Institute</title>
     <script src="../load-components.js"></script>
     <script src="../load-head.js"></script>
@@ -110,6 +113,23 @@
             <option value="">Language</option>
           </select>
         </div>
+        <div class="col-6 col-md-2">
+          <select id="filterTipe" class="form-select">
+            <option value="">Learning Type</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <select id="filterPlatform" class="form-select">
+            <option value="">Partner</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+		  <select id="filterHarga" class="form-select">
+		    <option value="">All Price</option>
+		    <option value="free">Free</option>
+		    <option value="paid">Paid</option>
+		  </select>
+		</div>
         <div class="col-12 col-md-2 d-grid">
           <button id="btnResetFilters" class="btn btn-outline-secondary">Reset</button>
         </div>
@@ -128,7 +148,11 @@
 
     <script>
   // == KONFIG ==
-  const apiUrl = "https://script.google.com/macros/s/AKfycbwphVxeXWqOHpIhvAr8wlMqSYvErzNWtjS7kx0DtgZiXeAzNgCmJHMYrGdWs8q2l6neYQ/exec"; // ganti dengan URL deployment Apps Script Anda
+  const SHEET_ID = '1pdjgaXanB9SmUlUCb1sRfPM48MPerHxfjL6Hpty6J3w'; 
+const API_KEY = 'AIzaSyAbXfG0N-mrwxu-GTdrk36ycLQfffxkd3U'; 
+const RANGE = 'All'; 
+const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+
   const itemsPerPage = 12;
 
   // == STATE ==
@@ -137,6 +161,8 @@
   let currentPage = 1;
   let currentController = null;      // AbortController untuk batalkan request lama
   const cache = new Map();           // cache response per querystring
+  let allData = []; // Menyimpan seluruh data dari Google Sheets
+
 
   // == ELEMENTS (sesuaikan dengan id di HTML Anda) ==
   const el = {
@@ -151,57 +177,81 @@
     fLevel: document.getElementById("filterLevel"),
     fKemampuan: document.getElementById("filterKemampuan"),
     fBahasa: document.getElementById("filterBahasa"),
+    fTipe: document.getElementById("filterTipe"),    
+    fPlatform: document.getElementById("filterPlatform"),
+    fHarga: document.getElementById("filterHarga"),
     btnReset: document.getElementById("btnResetFilters"),
   };
 
   // == LOADING UI (overlay hanya area kartu + top progress bar global) ==
-  let loadingOverlay, loadingBar;
-  function ensureLoadingUI() {
-    // Top progress bar (global)
-    if (!loadingBar) {
-      loadingBar = document.createElement('div');
-      loadingBar.style.cssText = `
-        position:fixed; left:0; top:0; height:3px; width:0%;
-        background:linear-gradient(90deg, #0d6efd, #66b2ff);
-        transition:width .3s ease; z-index:10000;`;
-      document.body.appendChild(loadingBar);
-    }
+  // ===== LOADING UI =====
+let loadingOverlay, loadingBar, loadingTimer;
 
-    // Overlay di dalam #cardContainer
-    if (!loadingOverlay) {
-      const host = el.cards; // #cardContainer
-      const cs = window.getComputedStyle(host);
-      if (cs.position === 'static') host.style.position = 'relative';
-
-      loadingOverlay = document.createElement('div');
-      loadingOverlay.style.cssText = `
-        position:absolute; inset:0;
-        display:none; align-items:center; justify-content:center;
-        background:rgba(255,255,255,.7);
-        backdrop-filter:saturate(150%) blur(2px);
-        z-index:10; pointer-events:auto;`;
-      loadingOverlay.innerHTML = `
-        <div style="display:flex; gap:.75rem; align-items:center; font-weight:600;">
-          <div class="spinner-border" role="status" aria-hidden="true"></div>
-          <span>Memuat…</span>
-        </div>`;
-      host.appendChild(loadingOverlay);
-    }
+function ensureLoadingUI() {
+  // Top progress bar (global)
+  if (!loadingBar) {
+    loadingBar = document.createElement('div');
+    loadingBar.style.cssText = `
+      position:fixed; left:0; top:0; height:3px; width:0%;
+      background:linear-gradient(90deg, #0d6efd, #66b2ff);
+      transition:width .3s ease, opacity .5s ease;
+      opacity:0;
+      z-index:10000;`;
+    document.body.appendChild(loadingBar);
   }
 
-  function setLoading(active) {
-    ensureLoadingUI();
-    if (active) {
-      loadingOverlay.style.display = 'flex';   // overlay hanya di area kartu
-      loadingBar.style.width = '20%';          // start cepat
-      setTimeout(()=> loadingBar.style.width = '55%', 200);
-      setTimeout(()=> loadingBar.style.width = '80%', 600);
-    } else {
-      loadingOverlay.style.display = 'none';
-      loadingBar.style.width = '100%';
-      setTimeout(()=> loadingBar.style.width = '0%', 250);
-    }
+  // Overlay di dalam #cardContainer
+  if (!loadingOverlay) {
+    const host = el.cards; // #cardContainer
+    const cs = window.getComputedStyle(host);
+    if (cs.position === 'static') host.style.position = 'relative';
+
+    loadingOverlay = document.createElement('div');
+    loadingOverlay.style.cssText = `
+      position:absolute; inset:0;
+      display:none; align-items:center; justify-content:center;
+      background:rgba(255,255,255,.75);
+      backdrop-filter:saturate(150%) blur(3px);
+      z-index:10; pointer-events:auto;`;
+    loadingOverlay.innerHTML = `
+      <div style="display:flex; gap:.75rem; align-items:center; font-weight:600;">
+        <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+        <span>Memuat…</span>
+      </div>`;
+    host.appendChild(loadingOverlay);
   }
+}
+
+// Aktif / nonaktifkan loading
+function setLoading(active) {
+  ensureLoadingUI();
+  clearInterval(loadingTimer);
+
+  if (active) {
+    // Mulai progress bar
+    loadingOverlay.style.display = 'flex';
+    loadingBar.style.opacity = '1';
+    loadingBar.style.width = '10%';
+
+    let width = 10;
+    loadingTimer = setInterval(() => {
+      if (width < 90) {
+        width += Math.random() * 10; // naik bertahap
+        loadingBar.style.width = width + '%';
+      }
+    }, 400);
+  } else {
+    // Selesaikan dan sembunyikan dengan halus
+    loadingBar.style.width = '100%';
+    setTimeout(() => {
+      loadingBar.style.opacity = '0';
+      loadingBar.style.width = '0%';
+      clearInterval(loadingTimer);
+    }, 500);
+
+    loadingOverlay.style.display = 'none';
+  }
+}
 
   // == HELPERS ==
   const lc = v => (v ?? "").toString().toLowerCase();
@@ -238,6 +288,8 @@
     if (el.fLevel.value)       params.set("level", el.fLevel.value);
     if (el.fKemampuan.value)   params.set("kemampuan", el.fKemampuan.value);
     if (el.fBahasa.value)      params.set("bahasa", el.fBahasa.value);
+    if (el.fTipe.value)      params.set("tipe", el.fTipe.value);
+    if (el.fPlatform.value)      params.set("platform", el.fPlatform.value);
 
     return params.toString();
   }
@@ -268,30 +320,59 @@
       el.fLevel.value = "";
       el.fKemampuan.value = "";
       el.fBahasa.value = "";
+      el.fTipe.value = "";
+      el.fPlatform.value = "";
       loadPage(1);
     });
   }
 
   async function loadMeta() {
-    // meta ringan; gunakan progress bar saja tanpa overlay area kartu
-    ensureLoadingUI();
-    loadingBar.style.width = '25%';
-    try {
-      const cacheKey = "__meta__";
-      let meta;
-      if (cache.has(cacheKey)) {
-        meta = cache.get(cacheKey);
-      } else {
-        const res = await fetch(`${apiUrl}?mode=meta`);
-        meta = await res.json();
-        cache.set(cacheKey, meta);
-      }
-      applyMeta(meta);
-    } finally {
-      loadingBar.style.width = '100%';
-      setTimeout(()=> loadingBar.style.width = '0%', 250);
-    }
+  try {
+    const res = await fetch(apiUrl);
+    const data = await res.json();
+    const values = data.values || [];
+    if (values.length < 2) return;
+
+    const headers = values[0];
+    const rows = values.slice(1).map(row => {
+      const obj = {};
+      headers.forEach((h, i) => {
+        obj[h.trim().toLowerCase().replace(/\s+/g, "_")] = row[i] || "";
+      });
+      return obj;
+    });
+
+    // Simpan semua data ke variabel global
+    allData = rows;
+
+    // Generate nilai unik untuk setiap filter dropdown
+    const getUnique = key => {
+	  const multiValueKeys = ["institution", "category", "kemampuan"]; // kolom dengan banyak nilai
+	  const values = rows.flatMap(r => {
+	    const val = r[key] || "";
+	    if (multiValueKeys.includes(key)) {
+	      return val.split(";").map(v => v.trim()).filter(Boolean);
+	    }
+	    return [val.trim()].filter(Boolean);
+	  });
+	  return [...new Set(values)].sort();
+	};
+
+
+    applyMeta({
+      institution: getUnique("institution"),
+      category: getUnique("category"),
+      level: getUnique("level"),
+      pacing_or_type: getUnique("pacing_or_type"),
+      bahasa: getUnique("bahasa"),
+      tipe: getUnique("tipe"),      
+      platform: getUnique("platform"),
+      kemampuan: getUnique("kemampuan"),
+    });
+  } catch (err) {
+    console.error("Gagal memuat meta:", err);
   }
+}
 
   function applyMeta(meta) {
     fillSelect(el.fInstitution, meta.institution || [], "All Institution");
@@ -300,58 +381,100 @@
     fillSelect(el.fLevel,       meta.level || [], "All Level");
     fillSelect(el.fKemampuan,   meta.kemampuan || [], "All Skill");
     fillSelect(el.fBahasa,      meta.bahasa || [], "All Language");
+    fillSelect(el.fTipe,      meta.tipe || [], "All Learning Type");
+    fillSelect(el.fPlatform,      meta.platform || [], "All Partner");
     el.filtersRow.style.display = "";
   }
 
   async function loadPage(page = 1) {
-    currentPage = page;
-    const qs = buildQS();
+  currentPage = page;
+  renderSkeleton();
+  setLoading(true);
 
-    // 1) gunakan cache jika ada → render instan
-    if (cache.has(qs)) {
-      const data = cache.get(qs);
-      items = data.items || [];
-      total = data.total || 0;
-      if (!items.length) renderEmptyState(); else renderCards();
-      renderPagination();
-      updateDataInfo();
-      // lanjut prefetch tanpa ganggu UI
-      prefetchNext(qs);
-      return;
-    }
-
-    // 2) batalkan request sebelumnya kalau masih jalan
-    if (currentController) currentController.abort();
-    currentController = new AbortController();
-
-    // 3) tampilkan skeleton + overlay lokal + progress bar
-    renderSkeleton();
-    setLoading(true);
-
-    try {
-      const res = await fetch(`${apiUrl}?${qs}`, { signal: currentController.signal });
+  try {
+    if (!allData.length) {
+      // Jika data belum dimuat (fallback)
+      const res = await fetch(apiUrl);
       const data = await res.json();
-      cache.set(qs, data);
-
-      items = data.items || [];
-      total = data.total || 0;
-
-      if (!items.length) renderEmptyState(); else renderCards();
-      renderPagination();
-      updateDataInfo();
-      prefetchNext(qs);
-    } catch (err) {
-      if (err.name !== 'AbortError') {
-        el.cards.innerHTML = `
-          <div class="col-12"><div class="alert alert-warning">
-            Gagal memuat data. Silakan coba lagi.
-          </div></div>`;
-        console.error(err);
-      }
-    } finally {
-      setLoading(false);
+      const headers = data.values[0];
+      const rows = data.values.slice(1).map(row => {
+        const obj = {};
+        headers.forEach((h, i) => {
+          obj[h.trim().toLowerCase().replace(/\s+/g, "_")] = row[i] || "";
+        });
+        return obj;
+      });
+      allData = rows;
     }
+
+    // Filter dan pencarian
+    const q = el.search.value.trim().toLowerCase();
+    const fInstitution = el.fInstitution.value.trim().toLowerCase();
+    const fCategory = el.fCategory.value.trim().toLowerCase();
+    const fLevel = el.fLevel.value.trim().toLowerCase();
+    const fPacing = el.fPacing.value.trim().toLowerCase();
+    const fKemampuan = el.fKemampuan.value.trim().toLowerCase();
+    const fBahasa = el.fBahasa.value.trim().toLowerCase();
+    const fTipe = el.fTipe.value.trim().toLowerCase();
+    const fPlatform = el.fPlatform.value.trim().toLowerCase();
+    const fHarga = el.fHarga.value.trim().toLowerCase();
+
+    let filtered = allData.filter(item => {
+      const matchSearch = !q || Object.values(item).some(v => v.toLowerCase().includes(q));
+      function matchMulti(value, filter) {
+		  if (!filter) return true;
+		  return value
+		    .toLowerCase()
+		    .split(";")
+		    .map(v => v.trim())
+		    .includes(filter);
+		}
+      	const matchInstitution = matchMulti(item.institution || "", fInstitution);
+		const matchCategory = matchMulti(item.category || "", fCategory);
+		const matchKemampuan = matchMulti(item.kemampuan || "", fKemampuan);
+      const matchLevel = !fLevel || item.level.toLowerCase() === fLevel;
+      const matchPacing = !fPacing || item.pacing_or_type.toLowerCase() === fPacing;
+      const matchBahasa = !fBahasa || item.bahasa.toLowerCase() === fBahasa;
+      const matchTipe = !fTipe || item.tipe.toLowerCase() === fTipe;
+      const matchPlatform = !fPlatform || item.platform.toLowerCase() === fPlatform;
+      // 🔹 Logika harga
+	  const hargaValue = parseFloat(item.harga || "0");
+	  const hargaType = hargaValue === 0 ? "free" : "paid";
+	  const matchHarga = !fHarga || hargaType === fHarga;
+
+      return (
+        matchSearch &&
+        matchInstitution &&
+        matchCategory &&
+        matchLevel &&
+        matchPacing &&
+        matchKemampuan &&
+        matchBahasa &&
+        matchTipe &&
+        matchPlatform &&
+    	matchHarga
+      );
+    });
+
+    // Pagination lokal
+    total = filtered.length;
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    items = filtered.slice(start, end);
+
+    if (!items.length) renderEmptyState();
+    else renderCards();
+
+    renderPagination();
+    updateDataInfo();
+
+  } catch (err) {
+    console.error(err);
+    el.cards.innerHTML = `<div class="col-12"><div class="alert alert-warning">Gagal memuat data.</div></div>`;
+  } finally {
+    setLoading(false);
   }
+}
 
   // Prefetch halaman berikutnya untuk UX mulus saat klik "Berikutnya"
   async function prefetchNext(currentQs) {
@@ -380,6 +503,7 @@
       const institution = (item.institution ?? '').toString();
       const start_date = (item.start_date ?? '').toString();
       const end_date = (item.end_date ?? '').toString();
+      const harga = (item.harga ?? '').toString();
 
       // Logo partner (maks 6)
       const logos = ((item.partner_logo ?? '').toString().split(';')
@@ -395,6 +519,12 @@
         const v = (val ?? '').toString().trim();
         return v ? `<span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">${escapeHtml(prefix ? `${prefix} ${v}` : v)}</span>` : '';
       };
+
+      // Format harga
+		const rawHarga = parseFloat(item.harga || "0");
+		const hargaFormatted = rawHarga === 0 
+		  ? "Free" 
+		  : rawHarga.toLocaleString("id-ID"); // format angka lokal Indonesia
 
       return `
         <div class="col-md-6 col-lg-3">
@@ -414,6 +544,7 @@
 
               <h5 class="card-title mb-1">${escapeHtml(courseName)}</h5>
               <h6 class="card-subtitle text-muted mb-3" style="font-size:1.05rem;">${escapeHtml(institution)}</h6>
+              <h6 class="card-subtitle text-primary mb-3" style="font-size:1.05rem;">${hargaFormatted === "Free" ? '<span class="text-success fw-bold">Free</span>' : `${escapeHtml(hargaFormatted)} IDR`}</h6>
 
               <div class="d-flex flex-wrap">
                 <span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">${escapeHtml(start_date)}</span>
@@ -468,7 +599,7 @@
     clearTimeout(t);
     t = setTimeout(() => loadPage(1), 350); // debounce kecil
   });
-  [el.fInstitution, el.fCategory, el.fPacing, el.fLevel, el.fKemampuan, el.fBahasa]
+  [el.fInstitution, el.fCategory, el.fPacing, el.fLevel, el.fKemampuan, el.fBahasa, el.fTipe, el.fPlatform, el.fHarga]
     .forEach(sel => sel.addEventListener("change", () => loadPage(1)));
 
   el.btnReset.addEventListener("click", () => {
@@ -479,6 +610,9 @@
     el.fLevel.value = "";
     el.fKemampuan.value = "";
     el.fBahasa.value = "";
+    el.fTipe.value = "";
+    el.fPlatform.value = "";
+    el.fHarga.value = "";
     loadPage(1);
   });
 
