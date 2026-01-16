@@ -1,0 +1,685 @@
+<html>
+  <head>
+<script>
+function loadComponent(id, url) {
+    fetch("https://iceinstitut.github.io/konten/" + url)
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById(id).innerHTML = data;
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    loadComponent("header", "header.html");
+    loadComponent("footer", "footer.html");
+});
+
+fetch("https://iceinstitut.github.io/konten/head.html")
+.then(response => response.text())
+.then(data => {
+    const temp = document.createElement("div");
+    temp.innerHTML = data;
+
+    // Proses <link> langsung
+    temp.querySelectorAll("link").forEach(link => {
+        document.head.appendChild(link);
+    });
+
+    // Proses <script> manual
+    temp.querySelectorAll("script").forEach(oldScript => {
+        const newScript = document.createElement("script");
+        newScript.src = oldScript.src;
+        if (oldScript.defer) newScript.defer = true;
+        document.head.appendChild(newScript);
+    });
+});
+</script>
+    <style>
+      .placeholder-card {
+        height: 220px;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        background-color: #f8f9fa;
+        animation: pulse 1.5s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          background-color: #f8f9fa;
+        }
+
+        50% {
+          background-color: #e9ecef;
+        }
+
+        100% {
+          background-color: #f8f9fa;
+        }
+      }
+
+      .hero {
+        background-color: #F6F6F6;
+        white-space: pre-line;
+      }
+
+      .hero__content {
+        align-items: center;
+        display: flex;
+        font-family: Inter;
+        justify-content: space-between;
+        max-height: 250px;
+        min-height: 210px;
+      }
+
+      .container-mw-xl {
+        max-width: 1472px !important;
+      }
+
+      .hero__content .highlighted {
+        color: #EE1522;
+      }
+
+      .hero__content .hero__image,
+      .hero__content div {
+        height: 100%;
+        max-height: 350px;
+        min-height: 310px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header"></div>
+    <section class="hero px-1">
+      <div class="hero__content container-mw-xl container-fluid">
+        <h1 class="display-1">
+          <span class="highlighted" style="font-weight:bold;">Explore world-class learning</span>
+          <p class="h3 font-weight-normal"> Unmatched quality. Market relevance. Comprehensive solutions.</p>
+        </h1>
+      </div>
+    </section>
+
+    <main class="container py-3">
+      
+      <h1 class="fw-bold text-body-emphasis">Search our catalog</h1>
+      <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1"><i class="bi bi-search" style="font-size: 2rem;"></i></span>
+      <input type="text" id="searchInput" class="form-control form-control-lg" style="font-size: 2rem;">
+    </div>
+
+      <!-- FILTERS ROW -->
+      <div class="row g-2 align-items-center mb-3" id="filtersRow" style="display:none;">
+        <div class="col-6 col-md-2">
+          <select id="filterInstitution" class="form-select">
+            <option value="">All Institution</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <select id="filterCategory" class="form-select">
+            <option value="">All Category</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <select id="filterPacing" class="form-select">
+            <option value="">All Pacing</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <select id="filterLevel" class="form-select">
+            <option value="">All Level</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <select id="filterKemampuan" class="form-select">
+            <option value="">All Skill</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <select id="filterBahasa" class="form-select">
+            <option value="">Language</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <select id="filterTipe" class="form-select">
+            <option value="">Learning Type</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <select id="filterPlatform" class="form-select">
+            <option value="">Partner</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <select id="filterHarga" class="form-select">
+            <option value="">All Price</option>
+            <option value="free">Free</option>
+            <option value="paid">Paid</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-2 d-grid">
+          <button id="btnResetFilters" class="btn btn-outline-secondary">Reset</button>
+        </div>
+      </div>
+
+      <div class="mb-2 text-end text-muted" id="dataInfo"></div>
+
+      <div id="cardContainer" class="row g-4"></div>
+
+      <nav class="mt-4">
+        <ul class="pagination justify-content-center" id="pagination"></ul>
+      </nav>
+    </main>
+
+    <div id="footer"></div>
+
+    <script>
+// == KONFIG (Cloudflare) ==
+const apiUrl = "https://katalog.ice-institut.workers.dev/"; // endpoint worker kamu
+
+// == CACHE USER (localStorage TTL 5 menit) ==
+const LS_KEY = "katalog_allData_v1"; //Kalau nanti ubah header/kolom/format, naikkan versinya jadi v2, supaya user tidak pakai cache lama yang bikin bug halus.
+const LS_TTL_MS = 5 * 60 * 1000; // 5 menit
+
+
+  const itemsPerPage = 12;
+
+  // == STATE ==
+  let items = [];
+  let total = 0;
+  let currentPage = 1;
+
+  let allData = []; // Menyimpan seluruh data dari Google Sheets
+  let allDataPromise = null;     // supaya tidak fetch ganda kalau dipanggil bersamaan
+
+
+  // == ELEMENTS (sesuaikan dengan id di HTML Anda) ==
+  const el = {
+    search: document.getElementById("searchInput"),
+    info: document.getElementById("dataInfo"),
+    cards: document.getElementById("cardContainer"),
+    pagination: document.getElementById("pagination"),
+    filtersRow: document.getElementById("filtersRow"),
+    fInstitution: document.getElementById("filterInstitution"),
+    fCategory: document.getElementById("filterCategory"),
+    fPacing: document.getElementById("filterPacing"),
+    fLevel: document.getElementById("filterLevel"),
+    fKemampuan: document.getElementById("filterKemampuan"),
+    fBahasa: document.getElementById("filterBahasa"),
+    fTipe: document.getElementById("filterTipe"),    
+    fPlatform: document.getElementById("filterPlatform"),
+    fHarga: document.getElementById("filterHarga"),
+    btnReset: document.getElementById("btnResetFilters"),
+  };
+
+function readLocalCache() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed.ts !== "number" || !Array.isArray(parsed.rows)) return null;
+    if (Date.now() - parsed.ts > LS_TTL_MS) return null;
+
+    return parsed.rows;
+  } catch {
+    return null;
+  }
+}
+
+function writeLocalCache(rows) {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify({ ts: Date.now(), rows }));
+  } catch {
+    // ignore
+  }
+}
+
+async function loadAllDataOnce() {
+  if (allData.length) return allData;
+
+  const cached = readLocalCache();
+  if (cached) {
+    allData = cached;
+    return allData;
+  }
+
+  if (allDataPromise) return allDataPromise;
+
+  allDataPromise = (async () => {
+    const res = await fetch(apiUrl, { method: "GET" });
+    if (!res.ok) throw new Error(`Fetch gagal: ${res.status}`);
+
+    const data = await res.json();
+    const values = Array.isArray(data.values) ? data.values : [];
+    if (values.length < 2) {
+      allData = [];
+      writeLocalCache(allData);
+      return allData;
+    }
+
+    const headers = values[0].map(h =>
+      String(h || "").trim().toLowerCase().replace(/\s+/g, "_")
+    );
+
+    const rows = values.slice(1).map(row => {
+      const obj = {};
+      for (let i = 0; i < headers.length; i++) {
+        obj[headers[i]] = row[i] || "";
+      }
+      return obj;
+    });
+
+    allData = rows;
+    writeLocalCache(allData);
+    return allData;
+  })();
+
+  try {
+    return await allDataPromise;
+  } finally {
+    allDataPromise = null;
+  }
+}
+
+  // == LOADING UI (overlay hanya area kartu + top progress bar global) ==
+  // ===== LOADING UI =====
+let loadingOverlay, loadingBar, loadingTimer;
+
+function ensureLoadingUI() {
+  // Top progress bar (global)
+  if (!loadingBar) {
+    loadingBar = document.createElement('div');
+    loadingBar.style.cssText = `
+      position:fixed; left:0; top:0; height:3px; width:0%;
+      background:linear-gradient(90deg, #0d6efd, #66b2ff);
+      transition:width .3s ease, opacity .5s ease;
+      opacity:0;
+      z-index:10000;`;
+    document.body.appendChild(loadingBar);
+  }
+
+  // Overlay di dalam #cardContainer
+  if (!loadingOverlay) {
+    const host = el.cards; // #cardContainer
+    const cs = window.getComputedStyle(host);
+    if (cs.position === 'static') host.style.position = 'relative';
+
+    loadingOverlay = document.createElement('div');
+    loadingOverlay.style.cssText = `
+      position:absolute; inset:0;
+      display:none; align-items:center; justify-content:center;
+      background:rgba(255,255,255,.75);
+      backdrop-filter:saturate(150%) blur(3px);
+      z-index:10; pointer-events:auto;`;
+    loadingOverlay.innerHTML = `
+      <div style="display:flex; gap:.75rem; align-items:center; font-weight:600;">
+        <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+        <span>Memuat…</span>
+      </div>`;
+    host.appendChild(loadingOverlay);
+  }
+}
+
+// Aktif / nonaktifkan loading
+function setLoading(active) {
+  ensureLoadingUI();
+  clearInterval(loadingTimer);
+
+  if (active) {
+    // Mulai progress bar
+    loadingOverlay.style.display = 'flex';
+    loadingBar.style.opacity = '1';
+    loadingBar.style.width = '10%';
+
+    let width = 10;
+    loadingTimer = setInterval(() => {
+      if (width < 90) {
+        width += Math.random() * 10; // naik bertahap
+        loadingBar.style.width = width + '%';
+      }
+    }, 400);
+  } else {
+    // Selesaikan dan sembunyikan dengan halus
+    loadingBar.style.width = '100%';
+    setTimeout(() => {
+      loadingBar.style.opacity = '0';
+      loadingBar.style.width = '0%';
+      clearInterval(loadingTimer);
+    }, 500);
+
+    loadingOverlay.style.display = 'none';
+  }
+}
+
+  // == HELPERS ==
+  function escapeHtml(str) {
+    return String(str ?? '')
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'","&#039;");
+  }
+  function escapeAttr(str){ return escapeHtml(str).replaceAll('\n',' '); }
+
+  function fillSelect(selectEl, values, placeholder) {
+    const current = selectEl.value;
+    const opts = ['<option value="">' + placeholder + '</option>']
+      .concat(values.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`));
+    selectEl.innerHTML = opts.join("");
+    if (values.includes(current)) selectEl.value = current;
+  }
+
+  function renderSkeleton(count = itemsPerPage) {
+    el.cards.innerHTML = Array.from({ length: count }).map(() => `
+      <div class="col-md-6 col-lg-3">
+        <div class="placeholder-card p-3" aria-busy="true" aria-live="polite"></div>
+      </div>`).join("");
+  }
+
+  function renderEmptyState() {
+    el.cards.innerHTML = `
+      <div class="col-12">
+        <div class="text-center text-muted py-5">
+          <div class="mb-2">🙁</div>
+          <h5 class="mb-2">Tidak ada hasil</h5>
+          <p class="mb-3">Coba longgarkan filter atau ubah kata kunci pencarian.</p>
+          <button class="btn btn-outline-secondary" id="btnClearFilters">Bersihkan Filter</button>
+        </div>
+      </div>`;
+    const btn = document.getElementById('btnClearFilters');
+    if (btn) btn.addEventListener('click', () => {
+      el.search.value = "";
+      el.fInstitution.value = "";
+      el.fCategory.value = "";
+      el.fPacing.value = "";
+      el.fLevel.value = "";
+      el.fKemampuan.value = "";
+      el.fBahasa.value = "";
+      el.fTipe.value = "";
+      el.fPlatform.value = "";
+      el.fHarga.value = "";
+      loadPage(1);
+    });
+  }
+
+async function loadMeta() {
+  try {
+    // pakai loader terpusat (Cloudflare + localStorage TTL)
+    const rows = await loadAllDataOnce();
+    if (!rows || rows.length === 0) return;
+
+    // Generate nilai unik untuk setiap filter dropdown
+    const multiValueKeys = new Set(["institution", "category", "kemampuan"]);
+
+    const getUnique = key => {
+      const vals = rows.flatMap(r => {
+        const val = (r[key] || "").trim();
+        if (!val) return [];
+        if (multiValueKeys.has(key)) {
+          return val
+            .split(";")
+            .map(v => v.trim())
+            .filter(Boolean);
+        }
+        return [val];
+      });
+
+      return [...new Set(vals)].sort();
+    };
+
+    applyMeta({
+      institution: getUnique("institution"),
+      category: getUnique("category"),
+      level: getUnique("level"),
+      pacing_or_type: getUnique("pacing_or_type"),
+      bahasa: getUnique("bahasa"),
+      tipe: getUnique("tipe"),
+      platform: getUnique("platform"),
+      kemampuan: getUnique("kemampuan"),
+    });
+  } catch (err) {
+    console.error("Gagal memuat meta:", err);
+  }
+}
+
+  function applyMeta(meta) {
+    fillSelect(el.fInstitution, meta.institution || [], "All Institution");
+    fillSelect(el.fCategory,    meta.category || [], "All Category");
+    fillSelect(el.fPacing,      meta.pacing_or_type || [], "All Pacing");
+    fillSelect(el.fLevel,       meta.level || [], "All Level");
+    fillSelect(el.fKemampuan,   meta.kemampuan || [], "All Skill");
+    fillSelect(el.fBahasa,      meta.bahasa || [], "All Language");
+    fillSelect(el.fTipe,      meta.tipe || [], "All Learning Type");
+    fillSelect(el.fPlatform,      meta.platform || [], "All Partner");
+    el.filtersRow.style.display = "";
+  }
+
+async function loadPage(page = 1) {
+  currentPage = page;
+  renderSkeleton();
+  setLoading(true);
+
+  try {
+    // ✅ Satu pintu load data (Cloudflare + localStorage TTL)
+    await loadAllDataOnce();
+
+    // Filter dan pencarian
+    const qRaw = el.search.value.trim().toLowerCase();
+    const q = qRaw.length >= 2 ? qRaw : "";
+    const fInstitution = el.fInstitution.value.trim().toLowerCase();
+    const fCategory = el.fCategory.value.trim().toLowerCase();
+    const fLevel = el.fLevel.value.trim().toLowerCase();
+    const fPacing = el.fPacing.value.trim().toLowerCase();
+    const fKemampuan = el.fKemampuan.value.trim().toLowerCase();
+    const fBahasa = el.fBahasa.value.trim().toLowerCase();
+    const fTipe = el.fTipe.value.trim().toLowerCase();
+    const fPlatform = el.fPlatform.value.trim().toLowerCase();
+    const fHarga = el.fHarga.value.trim().toLowerCase();
+
+    function matchMulti(value, filter) {
+      if (!filter) return true;
+      const norm = String(value || "").toLowerCase();
+      if (!norm) return false;
+      return norm
+        .split(";")
+        .map(v => v.trim())
+        .filter(Boolean)
+        .includes(filter);
+    }
+
+    let filtered = allData.filter(item => {
+      // ✅ Search hanya pakai kolom search_index
+      const si = String(item.search_index || "").toLowerCase();
+      const matchSearch = !q || si.includes(q);
+
+      const matchInstitution = matchMulti(item.institution, fInstitution);
+      const matchCategory = matchMulti(item.category, fCategory);
+      const matchKemampuan = matchMulti(item.kemampuan, fKemampuan);
+
+      const level = String(item.level || "").toLowerCase();
+      const pacing = String(item.pacing_or_type || "").toLowerCase();
+      const bahasa = String(item.bahasa || "").toLowerCase();
+      const tipe = String(item.tipe || "").toLowerCase();
+      const platform = String(item.platform || "").toLowerCase();
+
+      const matchLevel = !fLevel || level === fLevel;
+      const matchPacing = !fPacing || pacing === fPacing;
+      const matchBahasa = !fBahasa || bahasa === fBahasa;
+      const matchTipe = !fTipe || tipe === fTipe;
+      const matchPlatform = !fPlatform || platform === fPlatform;
+
+      // 🔹 Logika harga
+      const hargaValue = parseFloat(item.harga || "0");
+      const hargaType = hargaValue === 0 ? "free" : "paid";
+      const matchHarga = !fHarga || hargaType === fHarga;
+
+      return (
+        matchSearch &&
+        matchInstitution &&
+        matchCategory &&
+        matchLevel &&
+        matchPacing &&
+        matchKemampuan &&
+        matchBahasa &&
+        matchTipe &&
+        matchPlatform &&
+        matchHarga
+      );
+    });
+
+    // Pagination lokal
+    total = filtered.length;
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    items = filtered.slice(start, end);
+
+    if (!items.length) renderEmptyState();
+    else renderCards();
+
+    renderPagination();
+    updateDataInfo();
+
+  } catch (err) {
+    console.error(err);
+    el.cards.innerHTML =
+      `<div class="col-12"><div class="alert alert-warning">Gagal memuat data.</div></div>`;
+  } finally {
+    setLoading(false);
+  }
+}
+
+  function renderCards() {
+    const DEFAULT_COVER = 'https://iceinstitut.github.io/image/aset/cover-default.jpg';
+    el.cards.innerHTML = items.map(item => {
+      const courseName = (item.course_name ?? '').toString();
+      const institution = (item.institution ?? '').toString();
+      const start_date = (item.start_date ?? '').toString();
+      const end_date = (item.end_date ?? '').toString();
+      const harga = (item.harga ?? '').toString();
+
+      // Logo partner (maks 6)
+      const logos = ((item.partner_logo ?? '').toString().split(';')
+        .map(s => s.trim()).filter(Boolean).slice(0, 6)
+        .map(url => `
+          <img src="${escapeAttr(url)}"
+               class="col-auto rounded bg-body p-1 shadow-sm border"
+               style="height:45px"
+               loading="lazy"
+               alt="partner_logo ${escapeAttr(institution)}">`).join(''));
+
+      const badge = (val, prefix = '') => {
+        const v = (val ?? '').toString().trim();
+        return v ? `<span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">${escapeHtml(prefix ? `${prefix} ${v}` : v)}</span>` : '';
+      };
+
+      // Format harga
+        const rawHarga = parseFloat(item.harga || "0");
+        const hargaFormatted = rawHarga === 0 
+          ? "Free" 
+          : rawHarga.toLocaleString("id-ID"); // format angka lokal Indonesia
+
+      return `
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm border rounded-4">
+            <div class="ratio ratio-16x9 position-relative">
+              <img src="${escapeAttr(item.card_image || DEFAULT_COVER)}"
+                   loading="lazy"
+                   class="object-fit-cover w-100 h-100 rounded-4 p-2"
+                   alt="cover ${escapeAttr(courseName)}">
+            </div>
+
+            <div class="card-body pt-4">
+              ${logos ? `
+                <div class="row position-relative mb-1" style="margin-top:-4rem; margin-left:0.1rem; z-index:2;">
+                  ${logos}
+                </div>` : ''}
+
+              <h5 class="card-title mb-1">${escapeHtml(courseName)}</h5>
+              <h6 class="card-subtitle text-muted mb-3" style="font-size:1.05rem;">${escapeHtml(institution)}</h6>
+              <h6 class="card-subtitle text-primary mb-3" style="font-size:1.05rem;">${hargaFormatted === "Free" ? '<span class="text-success fw-bold">Free</span>' : `${escapeHtml(hargaFormatted)} IDR`}</h6>
+
+              <div class="d-flex flex-wrap">
+                <span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">${escapeHtml(start_date)}</span>
+                <span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">s/d</span>
+                <span class="badge rounded p-2 me-2 mb-2 bg-secondary-subtle text-secondary-emphasis">${escapeHtml(end_date)}</span>
+                ${badge(item.level)}${badge(item.pacing_or_type)}${badge(item.bahasa)}${badge(item.tipe)}${badge(item.platform)}
+              </div>
+            </div>
+
+            <div class="card-footer bg-transparent border-0 pt-0 pb-3">
+              <a class="btn btn-primary w-100"
+                 href="${escapeAttr(item.course_url || '#')}"
+                 target="_blank" rel="noopener">Course Detail</a>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderPagination() {
+    const totalPages = Math.max(1, Math.ceil(total / itemsPerPage));
+    const prevDisabled = currentPage === 1 ? "disabled" : "";
+    const nextDisabled = currentPage >= totalPages ? "disabled" : "";
+    el.pagination.innerHTML = `
+      <li class="page-item ${prevDisabled}">
+        <a class="page-link" href="#" onclick="return goPage(${currentPage - 1})">Sebelumnya</a>
+      </li>
+      <li class="page-item disabled">
+        <a class="page-link" href="#">${currentPage} / ${totalPages}</a>
+      </li>
+      <li class="page-item ${nextDisabled}">
+        <a class="page-link" href="#" onclick="return goPage(${currentPage + 1})">Berikutnya</a>
+      </li>`;
+  }
+  window.goPage = function(n){
+    if (n < 1) return false;
+    const totalPages = Math.max(1, Math.ceil(total / itemsPerPage));
+    if (n > totalPages) return false;
+    loadPage(n);
+    return false;
+  };
+
+  function updateDataInfo() {
+    const start = total ? ((currentPage - 1) * itemsPerPage + 1) : 0;
+    const end = Math.min(currentPage * itemsPerPage, total);
+    el.info.textContent = `Menampilkan ${start} - ${end} dari ${total} data`;
+  }
+
+  // == LISTENERS ==
+  let t = null;
+  el.search.addEventListener("input", () => {
+    clearTimeout(t);
+    t = setTimeout(() => loadPage(1), 350); // debounce kecil
+  });
+  [el.fInstitution, el.fCategory, el.fPacing, el.fLevel, el.fKemampuan, el.fBahasa, el.fTipe, el.fPlatform, el.fHarga]
+    .forEach(sel => sel.addEventListener("change", () => loadPage(1)));
+
+  el.btnReset.addEventListener("click", () => {
+    el.search.value = "";
+    el.fInstitution.value = "";
+    el.fCategory.value = "";
+    el.fPacing.value = "";
+    el.fLevel.value = "";
+    el.fKemampuan.value = "";
+    el.fBahasa.value = "";
+    el.fTipe.value = "";
+    el.fPlatform.value = "";
+    el.fHarga.value = "";
+    loadPage(1);
+  });
+
+  // == BOOT ==
+document.addEventListener("DOMContentLoaded", async () => {
+  renderSkeleton();
+  setLoading(true);
+  try {
+    await loadAllDataOnce(); // load sekali
+    await loadMeta();        // pakai allData yang sudah ada
+    await loadPage(1);       // pakai allData yang sudah ada
+  } finally {
+    setLoading(false);
+  }
+});
+</script>
+  </body>
+</html>
