@@ -4,6 +4,40 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Katalog Mata Kuliah Program ICE Institute Semester Terbaru</title>
+  <script>
+function loadComponent(id, url) {
+    fetch("https://iceinstitut.github.io/konten/" + url)
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById(id).innerHTML = data;
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    loadComponent("header", "header.html");
+    loadComponent("footer", "footer.html");
+});
+
+fetch("https://iceinstitut.github.io/konten/head.html")
+.then(response => response.text())
+.then(data => {
+    const temp = document.createElement("div");
+    temp.innerHTML = data;
+
+    // Proses <link> langsung
+    temp.querySelectorAll("link").forEach(link => {
+        document.head.appendChild(link);
+    });
+
+    // Proses <script> manual
+    temp.querySelectorAll("script").forEach(oldScript => {
+        const newScript = document.createElement("script");
+        newScript.src = oldScript.src;
+        if (oldScript.defer) newScript.defer = true;
+        document.head.appendChild(newScript);
+    });
+});
+</script>
   <style>
 :root{
   /* Light theme - ICE Institute branding */
@@ -523,6 +557,7 @@ html,body{ height:100%; }
 </style>
 </head>
 <body class="mkapp-body">
+  <div id="header"></div>
   <header class="mkapp-header">
     <div class="mkapp-header__inner">
       <div class="mkapp-brand">
@@ -653,6 +688,7 @@ html,body{ height:100%; }
 
     <section class="mkapp-footerpad"></section>
   </main>
+  <div id="footer"></div>
   <script>
 /* =========================
    CONFIG
@@ -1178,4 +1214,5 @@ function splitMultiUrls(v) {
 }
   </script>
 </body>
+
 </html>
