@@ -1075,7 +1075,7 @@ function renderCard(it) {
 
   const title = document.createElement("div");
   title.className = "mkapp-title";
-  title.textContent = safeText(it.institusi_claen || "-");
+  title.textContent = safeText(it.nama_mata_kuliah || "-");
 
   const badge = document.createElement("div");
   const statusTxt = String(it.status || "").trim();
