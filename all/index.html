@@ -176,7 +176,7 @@ fetch("https://iceinstitut.github.io/konten/head.html")
 const apiUrl = "https://katalog.ice-institut.workers.dev/"; // endpoint worker kamu
 
 // == CACHE USER (localStorage TTL 5 menit) ==
-const LS_KEY = "katalog_allData_v1"; //Kalau nanti ubah header/kolom/format, naikkan versinya jadi v2, supaya user tidak pakai cache lama yang bikin bug halus.
+const LS_KEY = "katalog_allData_v2"; //Kalau nanti ubah header/kolom/format, naikkan versinya jadi v2, supaya user tidak pakai cache lama yang bikin bug halus.
 const LS_TTL_MS = 5 * 60 * 1000; // 5 menit
 
 
@@ -682,4 +682,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 </script>
   </body>
+
 </html>
