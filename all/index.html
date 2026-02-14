@@ -650,6 +650,94 @@
     dur_max: el("f_dur_max"),
   };
 
+    // =========================
+  // URL -> Filter (Deep Link)
+  // =========================
+  function getParams(){
+    return new URLSearchParams(window.location.search);
+  }
+
+  // Apply querystring values into filter inputs
+  // NOTE: dipanggil setelah rebuildFilterOptions(raw) agar value dropdown valid
+  function setFilterFromParams(params){
+    const map = {
+      q: q,
+      institution: filters.institution,
+      level: filters.level,
+      pacing_or_type: filters.pacing_or_type,
+      bahasa: filters.bahasa,
+      category: filters.category,
+      kemampuan: filters.kemampuan,
+      tipe: filters.tipe,
+      platform: filters.platform,
+      skala_institution: filters.skala_institution,
+      fakultas: filters.fakultas,
+      harga: filters.harga,
+      dur_min: filters.dur_min,
+      dur_max: filters.dur_max,
+      sort: sortBy
+    };
+
+    for (const [key, target] of Object.entries(map)){
+      if (!params.has(key)) continue;
+      const val = (params.get(key) ?? "").trim();
+      if (!val) continue;
+
+      if (target === q){
+        q.value = val;
+      } else if (target && (target.tagName === "SELECT" || target.tagName === "INPUT")){
+        target.value = val;
+      }
+    }
+
+    // optional: quick faculty dari URL
+    if (params.has("quickFaculty")){
+      quickFaculty = (params.get("quickFaculty") ?? "").trim();
+    }
+  }
+
+    // =========================
+  // Filter -> URL (Shareable)
+  // =========================
+  function syncUrlFromState(){
+    const params = new URLSearchParams();
+
+    // Search
+    const qv = (q.value ?? "").trim();
+    if (qv) params.set("q", qv);
+
+    // Dropdown filters
+    if (filters.institution.value) params.set("institution", filters.institution.value);
+    if (filters.level.value) params.set("level", filters.level.value);
+    if (filters.pacing_or_type.value) params.set("pacing_or_type", filters.pacing_or_type.value);
+    if (filters.bahasa.value) params.set("bahasa", filters.bahasa.value);
+    if (filters.category.value) params.set("category", filters.category.value);
+    if (filters.kemampuan.value) params.set("kemampuan", filters.kemampuan.value);
+    if (filters.tipe.value) params.set("tipe", filters.tipe.value);
+    if (filters.platform.value) params.set("platform", filters.platform.value);
+    if (filters.skala_institution.value) params.set("skala_institution", filters.skala_institution.value);
+    if (filters.fakultas.value) params.set("fakultas", filters.fakultas.value);
+    if (filters.harga.value) params.set("harga", filters.harga.value);
+
+    // Duration
+    const dmin = (filters.dur_min.value ?? "").trim();
+    const dmax = (filters.dur_max.value ?? "").trim();
+    if (dmin) params.set("dur_min", dmin);
+    if (dmax) params.set("dur_max", dmax);
+
+    // Quick faculty (contains match)
+    if (quickFaculty) params.set("quickFaculty", quickFaculty);
+
+    // Sort (biar URL ringkas, hanya simpan kalau bukan default)
+    if (sortBy.value && sortBy.value !== "relevance") params.set("sort", sortBy.value);
+
+    const qs = params.toString();
+    const newUrl = qs ? `${location.pathname}?${qs}` : location.pathname;
+
+    // replaceState agar tidak menambah history stack
+    history.replaceState(null, "", newUrl);
+  }
+
   // State
   let raw = [];
   let filtered = [];
@@ -1131,6 +1219,8 @@
 
     activeFilters.textContent = String(countActiveFilters());
     updateQuickActive();
+    // === NEW: sinkronkan URL agar bisa di-copy/share ===
+    syncUrlFromState();
   }
 
   function render(){
@@ -1166,6 +1256,10 @@
       statusBox.innerHTML = `✅ Data siap • <b>${raw.length.toLocaleString("id-ID")}</b> item`;
       rebuildFilterOptions(raw);
       renderQuickButtons();
+
+      // === NEW: Apply filter dari URL (deep link) ===
+      const params = getParams();
+      setFilterFromParams(params);
 
       filtered = raw.slice();
       applyFilters();
