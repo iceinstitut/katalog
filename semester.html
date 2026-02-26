@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="https://iceinstitut.github.io/image/aset/favicon_icei.png" type="image/png">
   <title>Katalog Mata Kuliah Program ICE Institute Semester Terbaru</title>
   <script>
 function loadComponent(id, url) {
@@ -237,7 +238,7 @@ html,body{ height:100%; }
 
 .mkapp-filters__grid{
   display:grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 12px;
 }
 
@@ -321,6 +322,30 @@ html,body{ height:100%; }
 
 .mkapp-btn--wide{
   width: min(420px, 100%);
+}
+
+/* ===== Loading Spinner ===== */
+.mkapp-spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,.25);
+  border-top: 3px solid #ffffff;
+  animation: mkspin .7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes mkspin {
+  100% { transform: rotate(360deg); }
+}
+
+.mkapp-btn--loading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  pointer-events: none;
+  opacity: .9;
 }
 
 /* ===== Status bar ===== */
@@ -425,9 +450,14 @@ html,body{ height:100%; }
 }
 
 .mkapp-title{
-  font-size: 14px;
-  font-weight: 900;
-  line-height: 1.2;
+  font-size:14px;
+  font-weight:900;
+  line-height:1.2;
+
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
 }
 
 .mkapp-meta{
@@ -484,6 +514,10 @@ html,body{ height:100%; }
   color: var(--mkapp-text);
   font-weight: 800;
   word-break: break-word;
+}
+
+.mkapp-kv--full {
+  grid-column: 1 / -1;
 }
 
 /* ===== Logos ===== */
@@ -589,7 +623,7 @@ html,body{ height:100%; }
     <section class="mkapp-controls">
       <div class="mkapp-search">
         <input id="mkappSearchInput" class="mkapp-search__input" type="search"
-               placeholder="Cari mata kuliah / institusi / kode…"
+               placeholder="Cari mata kuliah / institusi "
                autocomplete="off" />
         <div class="mkapp-search__hint">Ketikkan minimal 4 huruf</div>
       </div>
@@ -597,6 +631,7 @@ html,body{ height:100%; }
       <div class="mkapp-filters">
   <div class="mkapp-filters__grid">
 
+    <h5 style="grid-column:1 / -1;">Filter</h5>
     <div class="mkapp-field" style="display:none;">
       <label class="mkapp-field__label" for="mkappFilterPlatform">Platform</label>
       <select class="mkapp-field__select" id="mkappFilterPlatform">
@@ -695,7 +730,12 @@ html,body{ height:100%; }
 ========================= */
 const API_BASE = "https://script.google.com/macros/s/AKfycbwahPXQKNaBwe-CEm8bbpUfpa3eHSavEH748FRxdWUoehtNUkyUT-utB_OOZQdmP5UiUQ/exec"; // https://script.google.com/macros/s/XXXX/exec
 const CACHE_TTL_MS = 25 * 60 * 1000;
-const DEFAULT_LIMIT = 40;
+function getOptimalLimit() {
+  const w = window.innerWidth || 1200;
+  if (w <= 560) return 12;   // mobile
+  if (w <= 860) return 16;   // tablet kecil
+  return 24;                 // desktop
+}
 
 /* =========================
    STATE
@@ -757,7 +797,7 @@ initApp();
 async function initApp() {
   setInfo("Memuat filter…");
   setHeaderNote("Loading…");
-  setLoadMoreEnabled(false);
+  setLoadMoreState("loading");
 
   await loadFacets();   // isi dropdown dari kolom sendiri (backend facets)
   await resetAndLoad(); // load page pertama
@@ -901,7 +941,7 @@ async function resetAndLoad() {
 
   elGrid.innerHTML = "";
   setInfo("Memuat data…");
-  setLoadMoreEnabled(false);
+  setLoadMoreState("loading");
 
   await loadMore(true);
 }
@@ -911,10 +951,10 @@ async function loadMore(isFirstPage = false) {
   if (!mkappState.hasMore && !isFirstPage) return;
 
   mkappState.loading = true;
-  setLoadMoreEnabled(false);
+  setLoadMoreState("loading");
 
   const params = buildParams();
-  params.limit = String(DEFAULT_LIMIT);
+  params.limit = String(getOptimalLimit());
   if (mkappState.nextCursor) params.cursor = mkappState.nextCursor;
 
   const url = buildUrl(params);
@@ -939,7 +979,7 @@ async function loadMore(isFirstPage = false) {
     if (!resp || resp.status !== "ok") {
       setInfo("Gagal memuat: " + (resp && resp.message ? resp.message : "Unknown error"));
       mkappState.loading = false;
-      setLoadMoreEnabled(false);
+      setLoadMoreState("loading");
       setHeaderNote("Error");
       return;
     }
@@ -957,14 +997,18 @@ async function loadMore(isFirstPage = false) {
     setInfo(`Menampilkan ${shown} data. ${moreTxt}`);
 
     mkappState.loading = false;
-    setLoadMoreEnabled(mkappState.hasMore);
+    if (mkappState.hasMore) {
+      setLoadMoreState("ready");
+    } else {
+      setLoadMoreState("disabled");
+    }
     setHeaderNote(mkappState.hasMore ? "Ready" : "Done");
   } catch (err) {
     if (token !== mkappState.requestToken) return;
     mkappState.loading = false;
     setInfo("Error: " + String(err));
     setHeaderNote("Error");
-    setLoadMoreEnabled(false);
+    setLoadMoreState("loading");
   }
 }
 
@@ -1097,7 +1141,9 @@ function renderCard(it) {
   kv.appendChild(kvBox("SKS/Jumlah Jam", it.sks));
   kv.appendChild(kvBox("Bahasa", it.bahasa_pengantar));
   kv.appendChild(kvBox("Tipe", it.tipe_mata_kuliah));
-  kv.appendChild(kvBox("Jadwal", it.awal_kuliah));
+  const jadwalBox = kvBox("Jadwal", it.awal_kuliah);
+  jadwalBox.classList.add("mkapp-kv--full");
+  kv.appendChild(jadwalBox);
 
   // logos (multi url separated by ;)
   const logoUrls = splitMultiUrls(it.logo);
@@ -1188,10 +1234,25 @@ function kvBox(k, v) {
 ========================= */
 function setInfo(msg) { elInfo.textContent = msg; }
 function setHeaderNote(msg) { elHeaderNote.textContent = msg; }
-function setLoadMoreEnabled(enabled) {
-  elBtnLoadMore.disabled = !enabled;
-  elBtnLoadMore.style.opacity = enabled ? "1" : "0.6";
-  elBtnLoadMore.style.pointerEvents = enabled ? "auto" : "none";
+function setLoadMoreState(state) {
+  if (state === "loading") {
+    elBtnLoadMore.classList.add("mkapp-btn--loading");
+    elBtnLoadMore.disabled = true;
+    elBtnLoadMore.innerHTML = `
+      <span class="mkapp-spinner"></span>
+      <span>Loading...</span>
+    `;
+  } 
+  else if (state === "disabled") {
+    elBtnLoadMore.classList.remove("mkapp-btn--loading");
+    elBtnLoadMore.disabled = true;
+    elBtnLoadMore.innerHTML = "Load more";
+  } 
+  else {
+    elBtnLoadMore.classList.remove("mkapp-btn--loading");
+    elBtnLoadMore.disabled = false;
+    elBtnLoadMore.innerHTML = "Load more";
+  }
 }
 
 /* =========================
