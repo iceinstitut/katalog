@@ -1,45 +1,7 @@
-<!doctype html>
-<html lang="id">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="icon" href="https://iceinstitut.github.io/image/aset/favicon_icei.png" type="image/png">
-  <title>Katalog ICE Institute</title>
-
-  <script>
-    function loadComponent(id, url) {
-      fetch("https://iceinstitut.github.io/konten/" + url)
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById(id).innerHTML = data;
-        });
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-      loadComponent("header", "header.html");
-      loadComponent("footer", "footer.html");
-    });
-
-    fetch("https://iceinstitut.github.io/konten/head.html")
-      .then(response => response.text())
-      .then(data => {
-        const temp = document.createElement("div");
-        temp.innerHTML = data;
-
-        // Proses <link> langsung
-        temp.querySelectorAll("link").forEach(link => {
-          document.head.appendChild(link);
-        });
-
-        // Proses <script> manual
-        temp.querySelectorAll("script").forEach(oldScript => {
-          const newScript = document.createElement("script");
-          newScript.src = oldScript.src;
-          if (oldScript.defer) newScript.defer = true;
-          document.head.appendChild(newScript);
-        });
-      });
-  </script>
+---
+layout: default
+title: Katalog ICE Institute
+---
 
   <style>
     :root{
@@ -69,7 +31,6 @@
       color:var(--text);
       font-size: var(--ukuranfont);
     }
-    a{color:inherit}
     .wrap{max-width:var(--max); margin:0 auto; padding:20px 16px 40px}
 
     /* Top */
@@ -398,10 +359,7 @@
     @media (max-width: 560px){ .col-4{width:100%} }
     @media (max-width: 520px){ .filters{grid-template-columns:1fr} }
   </style>
-</head>
 
-<body>
-<div id="header"></div>
   <div class="wrap">
     <div class="topbar" style="display:none;">
       <a class="brand" href="#" onclick="return false;">
@@ -1235,6 +1193,3 @@
   load();
 })();
 </script>
-<div id="footer"></div>
-</body>
-</html>
