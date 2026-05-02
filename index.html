@@ -397,6 +397,16 @@ title: Katalog ICE Institute
       </div>
     </section>
 
+    <!-- QUICK FILTER (setelah hero) -->
+    <section class="quickWrap hide" aria-label="Quick Fakultas">
+      <div class="quickHead">
+        <div class="t">Quick Filter Fakultas</div>
+        <!-- <div class="pill">Match: <b>contains</b> (aman untuk data delimiter)</div> -->
+        <div class="pill">Klik Nama Fakultas untuk mengaktifkan, dan klik lagi untuk menon aktifkan</div>
+      </div>
+      <div class="quickRow" id="quickFakultas"></div>
+    </section>
+
     <!-- SEARCH BESAR -->
     <section class="searchBlock" aria-label="Search">
       <div class="cari">Search our catalog</div>
@@ -417,122 +427,117 @@ title: Katalog ICE Institute
       </div>
     </section>
 
-    <div class="row">
-      <div class="col-lg-3 col-md-4 col-12 mb-4">
-        <!-- FILTER -->
-        <section class="panel" aria-label="Filter">
-          <div class="panelHead">
-            <h2>Filter</h2>
-            <div class="pill"><b id="activeFilters">0</b> active filter</div>
-          </div>
-    
-          <div class="filters">
-            <div class="field">
-              <div class="label">Institution</div>
-              <select id="f_institution"><option value="">All</option></select>
-            </div>
-    
-            <div class="field">
-              <div class="label">Level</div>
-              <select id="f_level"><option value="">All</option></select>
-            </div>
-    
-            <div class="field">
-              <div class="label">Pacing</div>
-              <select id="f_pacing"><option value="">All</option></select>
-            </div>
-    
-            <div class="field">
-              <div class="label">Language</div>
-              <select id="f_bahasa"><option value="">All</option></select>
-            </div>
-    
-            <div class="field">
-              <div class="label">Category</div>
-              <select id="f_category"><option value="">All</option></select>
-            </div>
-    
-            <div class="field">
-              <div class="label">Skills</div>
-              <select id="f_kemampuan"><option value="">All</option></select>
-            </div>
-    
-            <div class="field">
-              <div class="label">Type</div>
-              <select id="f_tipe"><option value="">All</option></select>
-            </div>
-    
-            <div class="field hide">
-              <div class="label">Platform</div>
-              <select id="f_platform"><option value="">All</option></select>
-            </div>
-    
-            <div class="field hide">
-              <div class="label">Skala Institution</div>
-              <select id="f_skala"><option value="">All</option></select>
-            </div>
-    
-            <div class="field hide">
-              <div class="label">Fakultas</div>
-              <!-- opsi fakultas: split ; + unique -->
-              <select id="f_fakultas"><option value="">All</option></select>
-            </div>
-    
-            <div class="field">
-              <div class="label">Price</div>
-              <select id="f_harga">
-                <option value="">All</option>
-                <option value="FREE">Free</option>
-                <option value="PAID">Paid</option>
-              </select>
-            </div>
-    
-            <div class="field">
-              <div class="label">Duration (Hours)</div>
-              <div class="rangeRow">
-                <input id="f_dur_min" type="number" min="0" step="1" placeholder="Min" />
-                <input id="f_dur_max" type="number" min="0" step="1" placeholder="Max" />
-              </div>
-            </div>
-          </div>
-        </section>
+    <!-- FILTER -->
+    <section class="panel" aria-label="Filter">
+      <div class="panelHead">
+        <h2>Filter</h2>
+        <div class="pill"><b id="activeFilters">0</b> active filter</div>
       </div>
-      <div class="col-lg-9 col-md-8 col-12">
-        <!-- CARDS -->
-        <div class="gridHead" aria-label="Hasil">
-          <div class="title">
-            <h3>Result</h3>
-            <span class="count" id="resultInfo">—</span>
-          </div>
-          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-            <select id="sortBy" style="padding:10px 12px; border-radius:14px; border:1px solid var(--line); background:#fff;">
-              <option value="relevance">Sort: Relevansi (Search)</option>
-              <option value="name_asc">Name: A → Z</option>
-              <option value="name_desc">Name: Z → A</option>
-              <option value="dur_asc">Duration: Low → High</option>
-              <option value="dur_desc">Duration: High → Low</option>
-              <option value="price_asc">Price: Low → High</option>
-              <option value="price_desc">Price: High → Low</option>
-            </select>
-          </div>
-        </div>
-        <!-- INLINE LOADING (di atas card) -->
-        <div class="inlineLoading" id="inlineLoading">
-          <div class="left">
-            <span class="spinner" aria-hidden="true"></span>
-            <span id="inlineLoadingText">Memproses…</span>
-          </div>
-          <div class="bar" aria-hidden="true"><i></i></div>
+
+      <div class="filters">
+        <div class="field">
+          <div class="label">Institution</div>
+          <select id="f_institution"><option value="">All</option></select>
         </div>
 
-        <div class="row" id="cards"></div>
+        <div class="field">
+          <div class="label">Level</div>
+          <select id="f_level"><option value="">All</option></select>
+        </div>
+
+        <div class="field">
+          <div class="label">Pacing</div>
+          <select id="f_pacing"><option value="">All</option></select>
+        </div>
+
+        <div class="field">
+          <div class="label">Language</div>
+          <select id="f_bahasa"><option value="">All</option></select>
+        </div>
+
+        <div class="field">
+          <div class="label">Category</div>
+          <select id="f_category"><option value="">All</option></select>
+        </div>
+
+        <div class="field">
+          <div class="label">Skills</div>
+          <select id="f_kemampuan"><option value="">All</option></select>
+        </div>
+
+        <div class="field">
+          <div class="label">Type</div>
+          <select id="f_tipe"><option value="">All</option></select>
+        </div>
+
+        <div class="field hide">
+          <div class="label">Platform</div>
+          <select id="f_platform"><option value="">All</option></select>
+        </div>
+
+        <div class="field hide">
+          <div class="label">Skala Institution</div>
+          <select id="f_skala"><option value="">All</option></select>
+        </div>
+
+        <div class="field hide">
+          <div class="label">Fakultas</div>
+          <!-- opsi fakultas: split ; + unique -->
+          <select id="f_fakultas"><option value="">All</option></select>
+        </div>
+
+        <div class="field">
+          <div class="label">Price</div>
+          <select id="f_harga">
+            <option value="">All</option>
+            <option value="FREE">Free</option>
+            <option value="PAID">Paid</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <div class="label">Duration (Hours)</div>
+          <div class="rangeRow">
+            <input id="f_dur_min" type="number" min="0" step="1" placeholder="Min" />
+            <input id="f_dur_max" type="number" min="0" step="1" placeholder="Max" />
+          </div>
+        </div>
       </div>
-      
+    </section>
+
+    <!-- CARDS -->
+    <div class="gridHead" aria-label="Hasil">
+      <div class="title">
+        <h3>Result</h3>
+        <span class="count" id="resultInfo">—</span>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <select id="sortBy" style="padding:10px 12px; border-radius:14px; border:1px solid var(--line); background:#fff;">
+          <option value="relevance">Sort: Relevansi (Search)</option>
+          <option value="name_asc">Name: A → Z</option>
+          <option value="name_desc">Name: Z → A</option>
+          <option value="dur_asc">Duration: Low → High</option>
+          <option value="dur_desc">Duration: High → Low</option>
+          <option value="price_asc">Price: Low → High</option>
+          <option value="price_desc">Price: High → Low</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- INLINE LOADING (di atas card) -->
+    <div class="inlineLoading" id="inlineLoading">
+      <div class="left">
+        <span class="spinner" aria-hidden="true"></span>
+        <span id="inlineLoadingText">Memproses…</span>
+      </div>
+      <div class="bar" aria-hidden="true"><i></i></div>
+    </div>
+
+    <div class="row" id="cards"></div>
 
     <!-- LOAD MORE -->
     <div class="loadMoreWrap">
       <button class="btn" id="btnMore" style="min-width:220px;">Load More</button>
-    </div>
     </div>
   </div>
 
