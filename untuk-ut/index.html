@@ -31,6 +31,7 @@ title: Katalog ICE Institute
       color:var(--text);
       font-size: var(--ukuranfont);
     }
+    a{color:inherit}
     .wrap{max-width:var(--max); margin:0 auto; padding:20px 16px 40px}
 
     /* Top */
@@ -48,18 +49,31 @@ title: Katalog ICE Institute
 
     /* Hero */
     .hero{
-      margin-top:16px;
-      border:1px solid var(--line);
-      border-radius:calc(var(--radius) + 6px);
-      box-shadow: var(--shadow);
+      /* margin-top:16px; */
+      /* border:1px solid var(--line); */
+      /* border-radius:calc(var(--radius) + 6px); */
+      /* box-shadow: var(--shadow); */
       padding:20px 16px;
       overflow:hidden;
-      background: #ffffff;
+      /* background: #ffffff; */
     }
-    .hero__grid{display:grid; grid-template-columns: 1.4fr .6fr; gap:16px; align-items:center}
+    .hero__grid{
+      /* display:grid; */
+      grid-template-columns: 1.4fr .6fr; 
+      gap:16px; 
+      align-items:center; 
+      font-weight: bold;
+      text-align: center;
+    }
     .hero h1{margin:0; font-size:var(--ukuranfont4); line-height:1.12; letter-spacing:-.3px; color: var(--brand)}
     .hero p{margin:10px 0 0; color:var(--muted); line-height:1.55; max-width:56ch}
-    .hero__badgeRow{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
+    .hero__badgeRow{
+      display:flex; 
+      flex-wrap:wrap; 
+      gap:10px; 
+      margin-top:14px;
+      justify-content: center;
+    }
     .hero__badge{
       display:inline-flex; align-items:center; gap:8px;
       padding:9px 12px; border-radius:999px; border:1px solid var(--line);
@@ -202,7 +216,11 @@ title: Katalog ICE Institute
     }
     .panelHead{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px}
     .panelHead h2{margin:0; font-size:14px; color:var(--muted); font-weight:900; letter-spacing:.12em; text-transform:uppercase}
-    .filters{display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap:10px}
+    .filters{
+      display:grid; 
+      grid-template-columns: repeat(9, minmax(0, 1fr)); 
+      gap:10px
+    }
     .wrap .field{display:flex; flex-direction:column; gap:6px}
     .wrap .label{font-size:12px; color:var(--muted); font-weight:800}
     .wrap select, input[type="number"]{
@@ -356,12 +374,14 @@ title: Katalog ICE Institute
       .qbtn{scroll-snap-align:start}
       .qlabel small{display:none}
     }
+
+    .hide {display: none ! IMPORTANT;}
     @media (max-width: 560px){ .col-4{width:100%} }
     @media (max-width: 520px){ .filters{grid-template-columns:1fr} }
   </style>
 
   <div class="wrap">
-    <div class="topbar" style="display:none;">
+    <div class="topbar hide">
       <a class="brand" href="#" onclick="return false;">
         <span class="brand__dot"></span>
         <span class="brand__name">ICE Institute — Katalog</span>
@@ -373,20 +393,39 @@ title: Katalog ICE Institute
     <section class="hero" aria-label="Hero">
       <div class="hero__grid">
         <div>
-          <h1>Explore world-class learning with<br>ICE Institute</h1>
-          <p style="display:none;">
-            Unmatched quality. Market relevance. Comprehensive solutions.
-          </p>
+          <h1><span style="color: var(--text);">Explore world-class learning with</span> ICE Institute</h1>
           <div class="hero__badgeRow">
             <span class="hero__badge"><i></i> Unmatched quality</span>
             <span class="hero__badge"><i></i> Market relevance</span>
             <span class="hero__badge"><i></i> Comprehensive solutions</span>
           </div>
         </div>
-        <div class="notice" id="statusBox" style="display:none;">
+        <div class="notice hide" id="statusBox">
           <span class="spinner" aria-hidden="true"></span>
           Loading catalog data…
         </div>
+      </div>
+    </section>
+
+    <!-- SEARCH BESAR -->
+    <section class="searchBlock" aria-label="Search">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+        <div class="cari">Search our catalog</div>
+        <div class="subRow">
+          <div class="left">
+            <span class="chip" id="chipCount">0 item</span>
+            <!-- <span>Search pakai <b>search_index</b> (kolom 18).</span> -->
+          </div>
+          <div>
+            <span class="pill">Load More: <b>12</b> item</span>
+          </div>
+      </div>
+      </div>
+      <div class="searchRow">
+        <input id="q" class="searchInput" type="search"
+          placeholder="Search courses, topics, or institutions..."
+          autocomplete="off" />
+        <button class="btn btn--brand" id="btnReset" title="Reset search & filter">Reset</button>
       </div>
     </section>
 
@@ -398,26 +437,6 @@ title: Katalog ICE Institute
         <div class="pill">Klik Nama Fakultas untuk mengaktifkan, dan klik lagi untuk menon aktifkan</div>
       </div>
       <div class="quickRow" id="quickFakultas"></div>
-    </section>
-
-    <!-- SEARCH BESAR -->
-    <section class="searchBlock" aria-label="Search">
-      <div class="cari">Search our catalog</div>
-      <div class="searchRow">
-        <input id="q" class="searchInput" type="search"
-          placeholder="Search our catalog"
-          autocomplete="off" />
-        <button class="btn btn--brand" id="btnReset" title="Reset search & filter">Reset</button>
-      </div>
-      <div class="subRow">
-        <div class="left">
-          <span class="chip" id="chipCount">0 item</span>
-          <!-- <span>Search pakai <b>search_index</b> (kolom 18).</span> -->
-        </div>
-        <div>
-          <span class="pill">Load More: <b>12</b> item</span>
-        </div>
-      </div>
     </section>
 
     <!-- FILTER -->
@@ -463,17 +482,17 @@ title: Katalog ICE Institute
           <select id="f_tipe"><option value="">All</option></select>
         </div>
 
-        <div class="field" style="display:none;">
+        <div class="field hide">
           <div class="label">Platform</div>
           <select id="f_platform"><option value="">All</option></select>
         </div>
 
-        <div class="field" style="display:none;">
+        <div class="field hide">
           <div class="label">Skala Institution</div>
           <select id="f_skala"><option value="">All</option></select>
         </div>
 
-        <div class="field" style="display:none;">
+        <div class="field hide">
           <div class="label">Fakultas</div>
           <!-- opsi fakultas: split ; + unique -->
           <select id="f_fakultas"><option value="">All</option></select>
@@ -605,6 +624,94 @@ title: Katalog ICE Institute
     dur_min: el("f_dur_min"),
     dur_max: el("f_dur_max"),
   };
+
+    // =========================
+  // URL -> Filter (Deep Link)
+  // =========================
+  function getParams(){
+    return new URLSearchParams(window.location.search);
+  }
+
+  // Apply querystring values into filter inputs
+  // NOTE: dipanggil setelah rebuildFilterOptions(raw) agar value dropdown valid
+  function setFilterFromParams(params){
+    const map = {
+      q: q,
+      institution: filters.institution,
+      level: filters.level,
+      pacing_or_type: filters.pacing_or_type,
+      bahasa: filters.bahasa,
+      category: filters.category,
+      kemampuan: filters.kemampuan,
+      tipe: filters.tipe,
+      platform: filters.platform,
+      skala_institution: filters.skala_institution,
+      fakultas: filters.fakultas,
+      harga: filters.harga,
+      dur_min: filters.dur_min,
+      dur_max: filters.dur_max,
+      sort: sortBy
+    };
+
+    for (const [key, target] of Object.entries(map)){
+      if (!params.has(key)) continue;
+      const val = (params.get(key) ?? "").trim();
+      if (!val) continue;
+
+      if (target === q){
+        q.value = val;
+      } else if (target && (target.tagName === "SELECT" || target.tagName === "INPUT")){
+        target.value = val;
+      }
+    }
+
+    // optional: quick faculty dari URL
+    if (params.has("quickFaculty")){
+      quickFaculty = (params.get("quickFaculty") ?? "").trim();
+    }
+  }
+
+    // =========================
+  // Filter -> URL (Shareable)
+  // =========================
+  function syncUrlFromState(){
+    const params = new URLSearchParams();
+
+    // Search
+    const qv = (q.value ?? "").trim();
+    if (qv) params.set("q", qv);
+
+    // Dropdown filters
+    if (filters.institution.value) params.set("institution", filters.institution.value);
+    if (filters.level.value) params.set("level", filters.level.value);
+    if (filters.pacing_or_type.value) params.set("pacing_or_type", filters.pacing_or_type.value);
+    if (filters.bahasa.value) params.set("bahasa", filters.bahasa.value);
+    if (filters.category.value) params.set("category", filters.category.value);
+    if (filters.kemampuan.value) params.set("kemampuan", filters.kemampuan.value);
+    if (filters.tipe.value) params.set("tipe", filters.tipe.value);
+    if (filters.platform.value) params.set("platform", filters.platform.value);
+    if (filters.skala_institution.value) params.set("skala_institution", filters.skala_institution.value);
+    if (filters.fakultas.value) params.set("fakultas", filters.fakultas.value);
+    if (filters.harga.value) params.set("harga", filters.harga.value);
+
+    // Duration
+    const dmin = (filters.dur_min.value ?? "").trim();
+    const dmax = (filters.dur_max.value ?? "").trim();
+    if (dmin) params.set("dur_min", dmin);
+    if (dmax) params.set("dur_max", dmax);
+
+    // Quick faculty (contains match)
+    if (quickFaculty) params.set("quickFaculty", quickFaculty);
+
+    // Sort (biar URL ringkas, hanya simpan kalau bukan default)
+    if (sortBy.value && sortBy.value !== "relevance") params.set("sort", sortBy.value);
+
+    const qs = params.toString();
+    const newUrl = qs ? `${location.pathname}?${qs}` : location.pathname;
+
+    // replaceState agar tidak menambah history stack
+    history.replaceState(null, "", newUrl);
+  }
 
   // State
   let raw = [];
@@ -780,7 +887,7 @@ title: Katalog ICE Institute
 
     const plat = document.createElement("span");
     plat.className = "tag";
-    plat.innerHTML = `<b style="display:none">Platform:</b> ${escapeHtml(norm(it.platform) || "-")}`;
+    plat.innerHTML = `<b class="hide">Platform:</b> ${escapeHtml(norm(it.platform) || "-")}`;
 
     const lang = document.createElement("span");
     lang.className = "tag";
@@ -800,7 +907,7 @@ title: Katalog ICE Institute
 
     const ska = document.createElement("span");
     ska.className = "tag";
-    ska.innerHTML = `<b style="display:none">Skala:</b> ${escapeHtml(norm(it.skala_institution) || "-")}`;
+    ska.innerHTML = `<b class="hide">Skala:</b> ${escapeHtml(norm(it.skala_institution) || "-")}`;
 
     const dur = document.createElement("span");
     dur.className = "tag";
@@ -1087,6 +1194,8 @@ title: Katalog ICE Institute
 
     activeFilters.textContent = String(countActiveFilters());
     updateQuickActive();
+    // === NEW: sinkronkan URL agar bisa di-copy/share ===
+    syncUrlFromState();
   }
 
   function render(){
@@ -1122,6 +1231,10 @@ title: Katalog ICE Institute
       statusBox.innerHTML = `✅ Data siap • <b>${raw.length.toLocaleString("id-ID")}</b> item`;
       rebuildFilterOptions(raw);
       renderQuickButtons();
+
+      // === NEW: Apply filter dari URL (deep link) ===
+      const params = getParams();
+      setFilterFromParams(params);
 
       filtered = raw.slice();
       applyFilters();
