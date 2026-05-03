@@ -218,7 +218,7 @@ title: Katalog ICE Institute
     .panelHead h2{margin:0; font-size:14px; color:var(--muted); font-weight:900; letter-spacing:.12em; text-transform:uppercase}
     .filters{
       display:grid; 
-      grid-template-columns: repeat(4, minmax(0, 1fr)); 
+      grid-template-columns: repeat(9, minmax(0, 1fr)); 
       gap:10px
     }
     .wrap .field{display:flex; flex-direction:column; gap:6px}
@@ -393,10 +393,7 @@ title: Katalog ICE Institute
     <section class="hero" aria-label="Hero">
       <div class="hero__grid">
         <div>
-          <h1>Explore world-class learning with ICE Institute</h1>
-          <p class="hide">
-            Unmatched quality. Market relevance. Comprehensive solutions.
-          </p>
+          <h1><span style="color: var(--text);">Explore world-class learning with</span> ICE Institute</h1>
           <div class="hero__badgeRow">
             <span class="hero__badge"><i></i> Unmatched quality</span>
             <span class="hero__badge"><i></i> Market relevance</span>
@@ -410,6 +407,28 @@ title: Katalog ICE Institute
       </div>
     </section>
 
+    <!-- SEARCH BESAR -->
+    <section class="searchBlock" aria-label="Search">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+        <div class="cari">Search our catalog</div>
+        <div class="subRow">
+          <div class="left">
+            <span class="chip" id="chipCount">0 item</span>
+            <!-- <span>Search pakai <b>search_index</b> (kolom 18).</span> -->
+          </div>
+          <div>
+            <span class="pill">Load More: <b>12</b> item</span>
+          </div>
+      </div>
+      </div>
+      <div class="searchRow">
+        <input id="q" class="searchInput" type="search"
+          placeholder="Search courses, topics, or institutions..."
+          autocomplete="off" />
+        <button class="btn btn--brand" id="btnReset" title="Reset search & filter">Reset</button>
+      </div>
+    </section>
+
     <!-- QUICK FILTER (setelah hero) -->
     <section class="quickWrap hide" aria-label="Quick Fakultas">
       <div class="quickHead">
@@ -418,26 +437,6 @@ title: Katalog ICE Institute
         <div class="pill">Klik Nama Fakultas untuk mengaktifkan, dan klik lagi untuk menon aktifkan</div>
       </div>
       <div class="quickRow" id="quickFakultas"></div>
-    </section>
-
-    <!-- SEARCH BESAR -->
-    <section class="searchBlock" aria-label="Search">
-      <div class="cari">Search our catalog</div>
-      <div class="searchRow">
-        <input id="q" class="searchInput" type="search"
-          placeholder="Search our catalog"
-          autocomplete="off" />
-        <button class="btn btn--brand" id="btnReset" title="Reset search & filter">Reset</button>
-      </div>
-      <div class="subRow">
-        <div class="left">
-          <span class="chip" id="chipCount">0 item</span>
-          <!-- <span>Search pakai <b>search_index</b> (kolom 18).</span> -->
-        </div>
-        <div>
-          <span class="pill">Load More: <b>12</b> item</span>
-        </div>
-      </div>
     </section>
 
     <!-- FILTER -->
