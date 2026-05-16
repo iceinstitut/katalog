@@ -1218,33 +1218,300 @@ title: Katalog ICE Institute
     };
   };
 
+  const DB_NAME = "CatalogDB";
+  const STORE = "catalog";
+  const VERSION_KEY = "catalogVersion";
+
+  function openDB() {
+    return new Promise((resolve,reject)=>{
+
+      const req =
+        indexedDB.open(
+          DB_NAME,
+          1
+        );
+
+      req.onupgradeneeded =
+        ()=>{
+
+        req.result
+        .createObjectStore(
+          STORE
+        );
+
+      };
+
+      req.onsuccess =
+        ()=>resolve(
+          req.result
+        );
+
+      req.onerror =
+        ()=>reject(
+          req.error
+        );
+
+    });
+  }
+
+  async function saveCatalog(data){
+
+    const db =
+      await openDB();
+
+    return new Promise(
+      (resolve,reject)=>{
+
+      const tx =
+        db.transaction(
+          STORE,
+          "readwrite"
+        );
+
+      tx.objectStore(
+        STORE
+      ).put(
+        data,
+        "catalogData"
+      );
+
+      tx.oncomplete=
+        ()=>resolve();
+
+      tx.onerror=
+        ()=>reject();
+
+    });
+
+    console.log(
+    `[KATALOG]
+    IndexedDB tersimpan:
+    ${data.length} item`
+    );
+
+  }
+
+  async function getCatalog(){
+
+    const db =
+      await openDB();
+
+    return new Promise(
+      (resolve,reject)=>{
+
+        const tx =
+        db.transaction(
+          STORE,
+          "readonly"
+        );
+
+        const req =
+        tx.objectStore(
+          STORE
+        ).get(
+          "catalogData"
+        );
+
+        req.onsuccess=
+        ()=>resolve(
+          req.result
+        );
+
+        console.log(
+        "[KATALOG] Ambil dari IndexedDB"
+        );
+
+        req.onerror=
+        ()=>reject();
+      });
+
+  }
+
+
   async function load(){
+
     showLoading("Loading catalog data…");
+
     try{
-      statusBox.innerHTML = `<span class="spinner" aria-hidden="true"></span>Loading catalog data…`;
-      const res = await fetch(API_URL, { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
 
-      raw = parseApiResponse(json);
+      statusBox.innerHTML =
+      `<span class="spinner"></span>Loading catalog data…`;
 
-      statusBox.innerHTML = `✅ Data siap • <b>${raw.length.toLocaleString("id-ID")}</b> item`;
-      rebuildFilterOptions(raw);
+      const CACHE_KEY =
+        "catalogData";
+
+      const VERSION_KEY =
+        "catalogVersion";
+
+      // ======================
+      // CEK CACHE LOKAL
+      // ======================
+
+      const localData =
+      await getCatalog();
+
+      const localVersion =
+        localStorage.getItem(
+          VERSION_KEY
+        );
+
+      // ======================
+      // CEK WORKER VERSION
+      // ======================
+
+      const res =
+        await fetch(
+          API_URL,
+          {
+            method:"GET",
+            cache:"no-store"
+          }
+        );
+
+      if(!res.ok){
+        throw new Error(
+          `HTTP ${res.status}`
+        );
+      }
+
+      const workerVersion =
+        res.headers.get(
+          "X-Data-Version"
+        );
+
+      // ======================
+      // CACHE SAMA
+      // ======================
+
+      if(
+        localData &&
+        localVersion &&
+        localVersion ===
+        workerVersion
+      ){
+
+        console.log(
+          "Pakai cache perangkat"
+        );
+
+        raw =
+        JSON.parse(
+          localData
+        );
+
+      }
+
+      // ======================
+      // CACHE BERBEDA
+      // ======================
+
+      else{
+
+        console.log(
+          "Ambil cache worker"
+        );
+
+        const json =
+          await res.json();
+
+        raw =
+        parseApiResponse(
+          json
+        );
+
+        await saveCatalog(
+        raw
+        );
+
+        localStorage.setItem(
+          VERSION_KEY,
+          workerVersion
+        );
+
+      }
+
+      statusBox.innerHTML =
+        `✅ Data siap •
+        <b>${
+        raw.length.toLocaleString(
+        "id-ID"
+        )
+        }</b> item`;
+
+      rebuildFilterOptions(
+        raw
+      );
+
       renderQuickButtons();
 
-      // === NEW: Apply filter dari URL (deep link) ===
-      const params = getParams();
-      setFilterFromParams(params);
+      const params =
+        getParams();
 
-      filtered = raw.slice();
+      setFilterFromParams(
+        params
+      );
+
+      filtered =
+        raw.slice();
+
       applyFilters();
-    }catch(err){
-      console.error(err);
-      statusBox.innerHTML = `❌ Gagal memuat data. Cek API/akses CORS.`;
-      btnMore.disabled = true;
-    } finally {
-      hideLoading();
+
     }
+
+    catch(err){
+
+      console.error(
+        err
+      );
+
+      // fallback:
+      // jika internet gagal
+      // tetap pakai cache lokal
+
+      const backup =
+        localStorage.getItem(
+        "catalogData"
+        );
+
+      if(backup){
+
+        raw =
+        JSON.parse(
+          backup
+        );
+
+        rebuildFilterOptions(
+          raw
+        );
+
+        renderQuickButtons();
+
+        filtered =
+          raw.slice();
+
+        applyFilters();
+
+        statusBox.innerHTML=
+        `⚠ Offline mode`;
+      }
+
+      else{
+
+        statusBox.innerHTML=
+        `❌ Gagal memuat data`;
+
+        btnMore.disabled=true;
+
+      }
+
+    }
+
+    finally{
+
+      hideLoading();
+
+    }
+
   }
 
   // Events + inline loading
